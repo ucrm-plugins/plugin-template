@@ -1,10 +1,7 @@
 <?php
 declare(strict_types=1);
-//chdir(__DIR__);
-
-
-require __DIR__ . "/server/vendor/autoload.php";
-require __DIR__ . "/server/bootstrap.php";
+require_once __DIR__ . "/server/vendor/autoload.php";
+require_once __DIR__ . "/server/bootstrap.php";
 
 use Slim\Http\Request;
 use Slim\Http\Response;

@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- Notifications -->
-                    <div class="d-flex justify-content-start align-items-center w-100 px-2">
+                    <div class="d-flex justify-content-start align-items-center px-2 flex-grow-1">
 
                         <i
                             v-if="!isComplete"

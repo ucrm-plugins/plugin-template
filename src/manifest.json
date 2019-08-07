@@ -5,7 +5,7 @@
         "displayName": "Plugin Template",
         "description": "A simple Plugin template for use with UCRM.",
         "url": "https://github.com/ucrm-plugins/plugin-template",
-        "version": "1.2.0",
+        "version": "1.0.0",
         "ucrmVersionCompliancy": {
             "min": "2.16.4",
             "max": null
@@ -24,8 +24,6 @@
             "target": "iframe"
         }
     ],
-    "configuration": [
-
-    ]
+    "configuration": []
 }
 

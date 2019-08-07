@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Controllers\API;
 
+use App\Formatters\SqlFormatter;
 use App\Settings;
 use MVQN\Data\Database;
 use MVQN\Data\Exceptions\DatabaseConnectionException;
@@ -225,6 +226,22 @@ final class PsqlController
 
 
 
+            }
+        );
+
+
+
+        // Handle GET queries to the file logs...
+        $app->post(
+            "/psql/format",
+
+            function (Request $request, Response $response, array $args) use ($container)
+            {
+                $body = $request->getBody()->getContents();
+
+                $formatted = SqlFormatter::format($body);
+
+                return $response->withHeader("Content-Type", "text/html")->write($formatted);
             }
         );
 

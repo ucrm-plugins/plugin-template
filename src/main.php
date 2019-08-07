@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . "/vendor/autoload.php";
-require_once __DIR__ . "/bootstrap.php";
+require_once __DIR__ . "/server/vendor/autoload.php";
+require_once __DIR__ . "/server/bootstrap.php";
 
 use UCRM\Common\Log;
 

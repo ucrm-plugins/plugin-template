@@ -1,8 +1,6 @@
 <!--suppress JSUnusedLocalSymbols, JSUnresolvedVariable -->
 <template>
     <div>
-        {{ $url }}
-
         <div class="card mb-0">
             <div class="card-header d-flex flex-column flex-sm-row justify-content-between p-2 p-sm-3 p-md-4">
 
@@ -83,8 +81,14 @@
 
 
 
+
         </div>
-        <div id="jsGrid"></div>
+        <!--<div id="jsGrid"></div>-->
+        <div
+            v-if="sql"
+            class="mt-3"
+            v-html="sql">
+        </div>
     </div>
 </template>
 
@@ -105,6 +109,7 @@
         data () {
             return {
 
+                sql: "",
 
                 query: {},
 
@@ -224,6 +229,39 @@
 
                 let self = this;
 
+                //this.sql = query;
+
+
+                this.request = $.ajax({
+                    url: "../public.php?/api/psql/format",
+                    method: "POST",
+                    data: query,
+                    dataType: "text",
+                    contentType: "text/html",
+                    // Handle successful data acquisition...
+                    success: function(data)
+                    {
+                        // Indicate loading and the request are complete.
+                        //self.tablesLoading = false;
+                        self.request = null;
+
+                        //self.results = JSON.parse(data);
+                        //console.log(data);
+                        self.sql = data;
+                    },
+
+                    // Handle unsuccessful data acquisition...
+                    error: function(error)
+                    {
+                        // IF the operation was aborted, THEN ignore, OTHERWISE log the error to the browser console!
+                        if(error.statusText !== "abort")
+                            console.log(error);
+                    }
+                });
+
+
+
+                /*
                 this.request = $.ajax({
                     url: "../public.php?/api/psql/query",
                     method: "POST",
@@ -270,16 +308,7 @@
 
                             data: JSON.parse(data),
 
-                            /*
-                            fields: [
-                                { name: "Name", type: "text", width: 150, validate: "required" },
-                                { name: "Age", type: "number", width: 50 },
-                                { name: "Address", type: "text", width: 200 },
-                                { name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name" },
-                                { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
-                                { type: "control" }
-                            ]
-                            */
+
 
                             fields: fields,
 
@@ -302,6 +331,7 @@
                             console.log(error);
                     }
                 });
+                */
 
 
             }
