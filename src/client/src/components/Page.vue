@@ -1,6 +1,6 @@
 <template>
     <div id="content-container">
-        <div id="content" class="container-fluid h-100 mx-0 px-0 pt-3 pb-0 ">
+        <div id="content" class="container-fluid h-100 p-1 p-sm-3">
             <slot></slot>
         </div>
     </div>

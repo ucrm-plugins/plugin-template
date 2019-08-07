@@ -33,6 +33,9 @@
 
     html, body {
         height: 100vh;
+        min-width: 320px;
+        margin: 0;
+        padding: 0;
         position: relative;
         background-color: #edf0f3;
         overflow-x: hidden;

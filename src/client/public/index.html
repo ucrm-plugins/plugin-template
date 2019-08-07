@@ -1,30 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="<%= BASE_URL %>">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="favicon.ico">
-    <title>Plugin Template</title>
 
+    <title>Plugin Template</title>
 
     <!------------------------------------------------------------------------------------------------------------------
     UCRM Built-In Fonts, Themes & Styles
     ------------------------------------------------------------------------------------------------------------------->
 
-    <!--suppress HtmlUnknownTarget, SpellCheckingInspection -->
-    <!--<link rel="stylesheet" href="/assets/fonts/lato/lato.css?v=2.15.0-beta5">-->
-    <!--suppress HtmlUnknownTarget -->
-    <!--<link rel="stylesheet" href="/assets/fonts/ubnt-icon/ubnt-icon.css?v=2.15.0-beta5">-->
-    <!--suppress HtmlUnknownTarget -->
-    <!--<link rel="stylesheet" href="/assets/fonts/ucrm-icon/style.css?v=2.15.0-beta5">-->
-    <!--suppress HtmlUnknownTarget -->
-    <!--<link rel="stylesheet" href="/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css?v=2.15.0-beta5">-->
-    <!--suppress HtmlUnknownTarget -->
-    <!--<link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css?v=2.15.0-beta5">-->
-    <!--suppress HtmlUnknownTarget -->
-    <!--<link rel="stylesheet" href="/dist/main.min.css?v=2.15.0-beta5">-->
+    <script>
+        let prefix = "";
+        let version = "";
+
+        if(window.location.pathname.startsWith("/crm"))
+        {
+            let element = window.parent.document.getElementById("header-version__version");
+
+            prefix = "/crm";
+            version = element ? "?v=" + element.innerText : "";
+
+            // UNMS v1.X to UCRM v3.X
+            version = version.replace("?v=1.", "?v=3.");
+        }
+        else
+        {
+            let elements = document.getElementsByClassName("appGlobalHeader__versionItem");
+            let element = elements && elements.length > 0 ? elements[0] : null;
+
+            prefix = "";
+            version = element ? "?v=" + element.getAttribute("data-clipboard-text") : "";
+        }
+
+        document.write('<base href="' + prefix + '<%= BASE_URL %>">');
+
+        //console.log(prefix);
+        //console.log(version);
+
+        document.write(
+            '<!--suppress SpellCheckingInspection -->' +
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/lato/lato.css' + version + '">');
+        document.write(
+            '<!--suppress SpellCheckingInspection -->' +
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/ubnt-icon/ubnt-icon.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/ucrm-icon/style.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/vendor/leaflet/leaflet.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/dist/main.min.css' + version + '">');
+
+    </script>
+
+    <link rel="icon" href="favicon.ico">
 
     <!------------------------------------------------------------------------------------------------------------------
     FontAwesome Styles
@@ -46,6 +84,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
 
+    <!--suppress SpellCheckingInspection -->
     <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
 
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
@@ -92,7 +131,6 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
 
-
 <!--#region Ace Editor Scripts -->
 
 <!--suppress SpellCheckingInspection -->
@@ -125,27 +163,6 @@
 
 <!--#endregion -->
 
-<!--
-<script src="public/bundle/js/queryBuilder.js"></script>
--->
-<!--suppress SpellCheckingInspection -->
-<!--
-<script
-    src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder@2.5.2/dist/js/query-builder.min.js"
-    integrity="sha256-NgGVjSTX+Yi0yPUOOYZCp3u6jdtzJnxw1USseE4WnDg="
-    crossorigin="anonymous">
-</script>
--->
-<!--
-<script src="public/bundle/js/css-element-queries/ResizeSensor.js"></script>
-<script src="public/bundle/js/css-element-queries/ElementQueries.js"></script>
--->
-<!--
-<script src="public/js/jQuery.resize.js"></script>
-<script src="public/js/insertionQuery.js"></script>
-
-<script src="public/js/sqlParser.js"></script>
--->
 
 <script src="js/iframe.js"></script>
 <script src="js/filter.js"></script>
@@ -155,7 +172,7 @@
 <script>
 
     $(function() {
-        // Nothing to do at the moment!
+
     });
 
 </script>

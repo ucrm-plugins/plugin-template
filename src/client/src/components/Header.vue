@@ -1,6 +1,6 @@
 <template>
-    <div id="header-container" class="px-3 px-sm-4"  :style="[ hasToolbar() ? { paddingBottom: '0' } : {} ]">
-        <div id="header" class="text-left d-flex flex-column flex-sm-row justify-content-between p-0 mb-3 mb-sm-0">
+    <div id="ptv-header-container" class="px-3 px-sm-4"  :style="[ hasToolbar() ? { paddingBottom: '0' } : {} ]">
+        <div id="ptv-header" class="text-left d-flex flex-column flex-sm-row justify-content-between p-0 mb-3 mb-sm-0">
             <!-- Plugin Name -->
             <h1 class="mb-2 mb-sm-0">{{ pluginName }}</h1>
             <div class="d-flex flex-row justify-content-between">
@@ -29,8 +29,8 @@
                     <a
                         class="btn btn-sm btn-outline-secondary"
                         data-toggle="collapse"
-                        data-target="#headerMenu"
-                        href="#headerMenu"
+                        data-target="#ptv-header-menu"
+                        href="#ptv-header-menu"
                         role="button">
 
                         <i class="fas fa-bars"></i>
@@ -41,9 +41,9 @@
             </div>
         </div>
 
-        <div id="headerMenu" class="collapse dont-collapse-sm in">
+        <div id="ptv-header-menu" class="collapse dont-collapse-sm in">
 
-            <div id="toolbar" v-if="hasToolbar()" class="d-flex flex-column flex-sm-row justify-content-between">
+            <div id="ptv-toolbar" v-if="hasToolbar()" class="d-flex flex-column flex-sm-row justify-content-between">
 
                 <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-3">
                     <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.left" @click="menuCollapse">
@@ -235,7 +235,7 @@ export default {
         },
 
         menuCollapse() {
-            $("#headerMenu").collapse("hide");
+            $("#ptv-header-menu").collapse("hide");
         }
 
     }
@@ -245,7 +245,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-    #header-container {
+    #ptv-header-container {
         flex: none;
         display: block;
         margin: 0;
@@ -254,11 +254,11 @@ export default {
         padding: 15px 32px;
     }
 
-    #header {
+    #ptv-header {
 
     }
 
-    #header > h1 {
+    #ptv-header > h1 {
         margin: 0;
         color: #4c4c4c;
         font-size: 22px;
@@ -270,21 +270,21 @@ export default {
         height:16px;
     }
 
-    #toolbar {
+    #ptv-toolbar {
         //margin-top: 2px;
     }
 
-    #toolbar > ul.nav-tabs {
+    #ptv-toolbar > ul.nav-tabs {
         border: none;
         margin-top: 16px;
         margin-bottom: 2px;
     }
 
-    #toolbar .nav-item:last-child {
+    #ptv-toolbar .nav-item:last-child {
         margin-right: 0 !important;
     }
 
-    #toolbar .nav-link {
+    #ptv-toolbar .nav-link {
         color: #424242;
         margin-bottom: 2px;
         padding-left: 0;
