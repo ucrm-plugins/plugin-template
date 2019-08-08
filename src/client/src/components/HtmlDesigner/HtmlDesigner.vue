@@ -167,7 +167,8 @@
 
         .gjs-pn-options
             z-index 5
-            right calc(40% - ( 35px * 2 ) + 5px )
+            //right calc(41.39194139194139% - ( 35px * 2 ) - 5px )
+            right "calc( %s - ( 35px * 2 ) - 5px )" % panels-min-percentage
 
         /*
         .gjs-pn-btn.fa.fa-square-o
@@ -182,17 +183,17 @@
 
     @media screen and (min-width: 768px)
         .gjs-pn-views, .gjs-pn-views-container
-            width 40%
+            width 30%
         .gjs-pn-options
-            right 40%
+            right 30%
         .gjs-cv-canvas, .gjs-pn-commands
-            width 60%
+            width 70%
 
         .gjs-pn-devices-c
             z-index 3
         .gjs-pn-options
             z-index 4
-            right 40%
+            right 30%
 
 
         /*
