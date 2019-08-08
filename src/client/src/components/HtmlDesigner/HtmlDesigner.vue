@@ -107,34 +107,47 @@
 </script>
 
 <!--suppress CssFloatPxLength, CssUnusedSymbol -->
-<style lang="scss">
+<style lang="stylus">
     @import "../../../node_modules/grapesjs/dist/css/grapes.min.css";
 
-    :root {
-        --content-min-width: calc(576px - 2rem - 2px); /* 546px */
-        --sidebar-min-width: calc(576px - 2rem - 2px - 320px); /* 226px */
-        --sidebar-width: calc( ( (576px - 2rem - 2px - 320px) / (576px - 2rem - 2px) ) * (576px - 2rem - 2px) );
+    rem2px(value)
+        unit(value) is "rem" ? unit(value * 16, "px") : unit(value, unit(value))
+
+    editor-min-width = 576px - rem2px(2rem) + 2px // 546px
+
+    canvas-min-width = 320px
+    panels-min-width = editor-min-width - canvas-min-width // 226px
+
+    canvas-min-percentage = unit( ( 320px / editor-min-width ) * 100, "%")
+    panels-min-percentage = 100% - canvas-min-percentage
+
+
+    .gjs-devices-c
+        padding 0
+
+    @media screen and (min-width: 576px)
+        .gjs-pn-views, .gjs-pn-views-container
+            min-width panels-min-width
+            width panels-min-percentage
+        .gjs-pn-options
+            right panels-min-percentage
+        .gjs-cv-canvas, .gjs-pn-commands
+            min-width canvas-min-width
+            width canvas-min-percentage
+
+    @media screen and (min-width: 768px)
+        .gjs-pn-views, .gjs-pn-views-container
+            width 40%
+        .gjs-pn-options
+            right 40%
+        .gjs-cv-canvas, .gjs-pn-commands
+            width 60%
+
+    //@media screen and (min-width: 992px)
+    //@media screen and (min-width: 1200px)
 
 
 
-    }
-
-    /* Override some of the editor's default CSS in favor of our own! */
-    .gjs-devices-c {
-        padding: 0;
-    }
-    .gjs-pn-views, .gjs-pn-views-container {
-        //min-width: calc(576px - 2rem - 2px - 320px);
-        width: var(--sidebar-width);
-    }
-    .gjs-cv-canvas, .gjs-pn-commands {
-        //max-width: calc(100% - var(--sidebar-min-width));
-        width: var(--sidebar-width);
-    }
-    .gjs-pn-options {
-        //right: var(--sidebar-min-width);
-        right: var(--sidebar-width);
-    }
 
 
     .gjs-pn-buttons
@@ -142,10 +155,8 @@
         justify-content: flex-end;
     }
 
-    .gjs-pn-buttons:last-child
-    {
-        margin-right: 0;
-    }
+    .gjs-pn-buttons > span:last-child
+        margin-right 0
 
 
 
