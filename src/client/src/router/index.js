@@ -4,6 +4,7 @@ import PageNotFound from "../components/views/404";
 
 import EditorDemo from "../components/views/EditorDemo";
 import QueryBuilderDemo from "../components/views/QueryBuilderDemo";
+import HtmlDesignerDemo from "../components/views/HtmlDesignerDemo";
 import History from "../components/views/History";
 import Logs from "../components/views/Logs";
 import Settings from "../components/views/Settings";
@@ -21,18 +22,18 @@ const router = new Router({
         },
         {
             path: "/editor",
-            name: "Editor Demo",
+            name: "Editor (Demo)",
             component: EditorDemo
         },
         {
             path: "/query",
-            name: "QueryBuilder Demo",
+            name: "Query Builder (Demo)",
             component: QueryBuilderDemo
         },
         {
-            path: "/history",
-            name: "History",
-            component: History
+            path: "/designer",
+            name: "HTML Designer (Demo)",
+            component: HtmlDesignerDemo
         },
         {
             path: "/logs",

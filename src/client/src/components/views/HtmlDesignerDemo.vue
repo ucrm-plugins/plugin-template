@@ -1,0 +1,72 @@
+<!--suppress JSUnusedLocalSymbols, JSUnresolvedVariable -->
+<template>
+    <div class="h-100">
+
+        <HtmlDesigner></HtmlDesigner>
+
+
+    </div>
+</template>
+
+<script>
+
+    import HtmlDesigner from "../HtmlDesigner/HtmlDesigner";
+
+    export default {
+
+        name: "HtmlDesignerDemo",
+
+        components: {
+            HtmlDesigner
+            //QueryBuilder,
+            //VueJsonPretty,
+        },
+
+        data () {
+            return {
+
+                editor: null,
+
+
+            }
+        },
+
+        watch: {
+
+
+
+
+        },
+
+        computed: {
+
+
+        },
+
+
+        methods: {
+
+
+
+
+        },
+
+        created() {
+        },
+
+        mounted: function()
+        {
+
+
+        }
+
+    }
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style>
+
+
+
+</style>

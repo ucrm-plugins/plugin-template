@@ -50,7 +50,7 @@
                         <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
                             {{ item.name }}
                             <div v-if="item.badge">
-                                <span class="nav-badge rounded"><small>3</small></span>
+                                <span class="nav-badge rounded"><small>{{ item.badge }}</small></span>
                             </div>
 
                         </router-link>
@@ -86,94 +86,7 @@
 
 
         </div>
-        <!--
-        <div id="headerMenu" class="collapse dont-collapse-sm in">
 
-            <div id="toolbar" v-if="hasToolbar()"
-                 class="d-flex flex-column flex-sm-row justify-content-between">
-
-                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-3">
-                    <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.left">
-                        <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
-                            {{ item.name }}
-                            <div v-if="item.badge">
-                                <span class="nav-badge rounded"><small>3</small></span>
-                            </div>
-
-                        </router-link>
-                        <div class="nav-underline"></div>
-                    </li>
-                </ul>
-                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-3">
-                    <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.right">
-                        <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
-                            <span v-if="item.name">{{ item.name }}</span>
-
-                            <span v-if="item.icon">
-                            <i :class=
-                                   "[
-                                    { 'fas': item.icon }, item.icon,
-                                    { 'ml-2': item.name },
-                                    {'mx-sm-3': !item.name}, { 'mx-0': !item.name }
-                                ]">
-                            </i>
-                        </span>
-
-                            <div v-if="item.badge">
-                                <span class="nav-badge rounded"><small>3</small></span>
-                            </div>
-
-                        </router-link>
-                        <div class="nav-underline"></div>
-                    </li>
-                </ul>
-            </div>
-
-
-        </div>
-        -->
-
-        <!--
-        <div id="toolbar" v-if="hasToolbar()"
-             class="collapse in d-flex flex-column flex-sm-row justify-content-between">
-
-            <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-3">
-                <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.left">
-                    <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
-                        {{ item.name }}
-                        <div v-if="item.badge">
-                            <span class="nav-badge rounded"><small>3</small></span>
-                        </div>
-
-                    </router-link>
-                    <div class="nav-underline"></div>
-                </li>
-            </ul>
-            <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-3">
-                <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.right">
-                    <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
-                        <span v-if="item.name">{{ item.name }}</span>
-
-                        <span v-if="item.icon">
-                            <i :class=
-                                "[
-                                    { 'fas': item.icon }, item.icon,
-                                    { 'ml-2': item.name },
-                                    {'mx-sm-3': !item.name}, { 'mx-0': !item.name }
-                                ]">
-                            </i>
-                        </span>
-
-                        <div v-if="item.badge">
-                            <span class="nav-badge rounded"><small>3</small></span>
-                        </div>
-
-                    </router-link>
-                    <div class="nav-underline"></div>
-                </li>
-            </ul>
-        </div>
-        -->
     </div>
 </template>
 
@@ -190,18 +103,18 @@ export default {
             nav: {
                 left: [
                     {
-                        name: "Editor Demo",
+                        name: "Editor (Demo)",
                         link: "/editor",
                         badge: ""
                     },
                     {
-                        name: "QueryBuilder Demo",
+                        name: "QueryBuilder (Demo)",
                         link: "/query",
                         badge: ""
                     },
                     {
-                        name: "History",
-                        link: "/history",
+                        name: "HTML Designer (Demo)",
+                        link: "/designer",
                         badge: "2"
                     }
                 ],
@@ -243,7 +156,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 
     #ptv-header-container {
         flex: none;
