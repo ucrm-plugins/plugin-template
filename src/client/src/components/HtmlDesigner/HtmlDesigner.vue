@@ -23,6 +23,7 @@
 
     import grapes from "grapesjs";
 
+    import webpage from "grapesjs-preset-webpage"
 
 
     export default {
@@ -60,72 +61,51 @@
                 //height: "100%",
                 //width: "auto",
                 storageManager: { type: null },
-                //panels: { defaults: [] },
+                panels: null,
 
-                blockManager: {
-                    //appendTo: '#blocks',
-                    blocks: [
-                        /*
-                        {
-                            id: 'section', // id is mandatory
-                            label: '<b>Section</b>', // You can use HTML/SVG inside labels
-                            attributes: { class:'gjs-block-section' },
-                            content:
-                                `<section>
-                                    <h1>This is a simple title</h1>
-                                    <div>This is just a Lorem text: Lorem ipsum dolor sit amet</div>
-                                </section>`,
-                        },
+                styleManager: {},
 
-                         */
-                        {
-                            id: 'text',
-                            label: 'Text',
-                            content: '<div data-gjs-type="text">Insert your text here</div>',
-                            category: "Test",
-                            attributes: {
-                                //class: "gjs-fonts gjs-f-b1",
-                                //class: "gjs-fonts gjs-f-b2",
-                                //class: "gjs-fonts gjs-f-b3",
-                                //class: "gjs-fonts gjs-f-b37",
-                                class: "gjs-fonts gjs-f-text",
-                                //class: "fa fa-link",
-                                //class: "gjs-fonts gjs-f-image",
-                                //class: "fa fa-youtube-play",
-                                //class: "fa fa-map-o",
-                                //class: "fa fa-youtube-play",
-                                //class: "fa fa-quote-right",
-                                //class: "gjs-fonts gjs-f-h1p",
+                plugins: [
+                    'gjs-preset-webpage'
+                    //blocks
 
-                                // For others, inspect code on: https://grapesjs.com/demo.html
-                                // Also check out: https://github.com/artf/grapesjs-blocks-basic
-                            }
+                ],
 
-                        },
-                        /*
-                        {
-                            id: 'image',
-                            label: 'Image',
-                            // Select the component once it's dropped
-                            select: true,
-                            // You can pass components as a JSON instead of a simple HTML string,
-                            // in this case we also use a defined component type `image`
-                            content: {
-                                type: 'image'
-                            },
-                            // This triggers `active` event on dropped components and the `image`
-                            // reacts by opening the AssetManager
-                            activate: true,
-                        }
-                        */
-
-                    ]
-                },
+                pluginsOpts: {
+                    'gjs-preset-webpage': {
+                        // options
+                    }
+                }
 
 
-            })
+
+            });
 
 
+
+
+
+            $(function()
+            {
+                $(".gjs-radio-item-label[for='float-none']")
+                    .text("")
+                    .addClass("gjs-sm-icon")
+                    .addClass("fa")
+                    .addClass("fa-times");
+                $(".gjs-radio-item-label[for='float-left']")
+                    .text("")
+                    .addClass("gjs-sm-icon")
+                    .addClass("fa")
+                    .addClass("fa-align-left");
+                $(".gjs-radio-item-label[for='float-right']")
+                    .text("")
+                    .addClass("gjs-sm-icon")
+                    .addClass("fa")
+                    .addClass("fa-align-right");
+
+
+
+            });
 
 
 
@@ -133,9 +113,14 @@
     }
 </script>
 
+<style lang="scss">
+    //@import "./plugins/grapesjs-preset-webpage/style/main.scss";
+</style>
+
 <!--suppress CssFloatPxLength, CssUnusedSymbol -->
 <style lang="stylus">
     @import "../../../node_modules/grapesjs/dist/css/grapes.min.css";
+
 
     rem2px(value)
         unit(value) is "rem" ? unit(value * 16, "px") : unit(value, unit(value))
@@ -156,6 +141,24 @@
             min-width canvas-min-width
             width canvas-min-percentage
 
+        .gjs-pn-devices-c
+            z-index 6
+
+        .gjs-pn-options
+            z-index 5
+            right calc(40% - ( 35px * 2 ) + 5px )
+
+        /*
+        .gjs-pn-btn.fa.fa-square-o
+            position relative
+            right -( (35px * 9) + 5px)
+        .gjs-pn-btn.fa.fa-eye
+            position relative
+            right -( (35px * 7) + 5px)
+        */
+
+
+
     @media screen and (min-width: 768px)
         .gjs-pn-views, .gjs-pn-views-container
             width 40%
@@ -164,13 +167,30 @@
         .gjs-cv-canvas, .gjs-pn-commands
             width 60%
 
+        .gjs-pn-devices-c
+            z-index 3
+        .gjs-pn-options
+            z-index 4
+            right 40%
+
+
+        /*
+        .gjs-pn-btn.fa.fa-square-o
+            position inherit
+            right 0
+        .gjs-pn-btn.fa.fa-eye
+            position inherit
+            right 0
+        */
+
+
     //@media screen and (min-width: 992px)
     //@media screen and (min-width: 1200px)
 
 
     .gjs-devices-c
         width 170px
-        padding 0
+        //padding 0
 
 
     .gjs-pn-buttons
@@ -189,12 +209,34 @@
         border none
 
 
-    /* TODO: Fix buttons in Style Manager! */
+    //.gjs-editor
+        //font-size 0.75rem
 
     .gjs-editor select
-    {
-        background-image: unset;
-    }
+        background-image unset
+        height auto
+
+    .gjs-editor input[type]
+        height: auto
+
+    .gjs-editor input[type=radio]+label
+        margin-left auto
+        //font-size 1rem
+        line-height normal
+        margin-bottom 0
+
+
+
+
+
+
+    //.gjs-pn-btn.fa.fa-undo
+    //    position absolute
+    //    right -20px
+    //    z-index -1000
+
+
+
 
 
 </style>
