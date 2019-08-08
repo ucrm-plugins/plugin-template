@@ -2,7 +2,7 @@
 <template>
     <div class="h-100">
 
-        <HtmlDesigner></HtmlDesigner>
+        <HtmlDesigner v-model="html"></HtmlDesigner>
 
 
     </div>
@@ -26,6 +26,8 @@
             return {
 
                 editor: null,
+
+                html: ""
 
 
             }

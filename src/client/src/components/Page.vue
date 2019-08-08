@@ -1,6 +1,6 @@
 <template>
-    <div id="content-container">
-        <div id="content" class="container-fluid h-100 p-1 p-sm-3">
+    <div class="page-container">
+        <div class="page-content container-fluid h-100 p-2 p-sm-3">
             <slot></slot>
         </div>
     </div>
@@ -23,12 +23,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-    #content-container {
+    .page-container {
         flex: auto;
         overflow-y: hidden;
+        background-color: #edf0f3;
     }
 
-    #content {
+    .page-content {
         overflow-y: auto;
     }
 

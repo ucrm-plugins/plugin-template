@@ -22,17 +22,17 @@ const router = new Router({
         },
         {
             path: "/editor",
-            name: "Editor (Demo)",
+            name: "Editor",
             component: EditorDemo
         },
         {
             path: "/query",
-            name: "Query Builder (Demo)",
+            name: "QueryBuilder",
             component: QueryBuilderDemo
         },
         {
             path: "/designer",
-            name: "HTML Designer (Demo)",
+            name: "HtmlDesigner",
             component: HtmlDesignerDemo
         },
         {

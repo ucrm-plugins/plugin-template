@@ -16,7 +16,7 @@
                     </a>
                     <!-- Donate Link (disabled if none provided) -->
                     <a
-                        class="btn btn-sm btn-outline-success"
+                        class="btn btn-sm btn-outline-success ml-2"
                         :class="{ disabled: !donateLink }"
                         :href="donateLink"
                         target="_blank">
@@ -45,7 +45,7 @@
 
             <div id="ptv-toolbar" v-if="hasToolbar()" class="d-flex flex-column flex-sm-row justify-content-between">
 
-                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-3">
+                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-2">
                     <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.left" @click="menuCollapse">
                         <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
                             {{ item.name }}
@@ -58,9 +58,9 @@
                     </li>
                 </ul>
 
-                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-3">
+                <ul class="nav nav-tabs d-flex flex-column flex-sm-row text-center text-sm-left mt-0 mt-sm-2">
                     <li class="nav-item mr-0 mr-sm-5" v-for="item in nav.right" @click="menuCollapse">
-                        <router-link class="nav-link d-flex flex-row justify-content-between" :to="item.link">
+                        <router-link class="nav-link d-flex flex-row justify-content-between " :to="item.link">
                             <span v-if="item.name">{{ item.name }}</span>
 
                             <span v-if="item.icon">
@@ -103,17 +103,17 @@ export default {
             nav: {
                 left: [
                     {
-                        name: "Editor (Demo)",
+                        name: "AceEditor",
                         link: "/editor",
                         badge: ""
                     },
                     {
-                        name: "QueryBuilder (Demo)",
+                        name: "QueryBuilder",
                         link: "/query",
                         badge: ""
                     },
                     {
-                        name: "HTML Designer (Demo)",
+                        name: "HtmlDesigner",
                         link: "/designer",
                         badge: "2"
                     }
@@ -179,6 +179,9 @@ export default {
         font-weight: 300;
     }
 
+
+
+
     .button-icon {
         height:16px;
     }
@@ -202,6 +205,9 @@ export default {
         margin-bottom: 2px;
         padding-left: 0;
         padding-right: 0;
+        font-size: 1rem;
+        font-weight: 300;
+        color: black;
     }
 
     .nav-underline {

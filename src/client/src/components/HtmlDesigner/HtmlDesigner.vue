@@ -1,19 +1,27 @@
 <template>
 
-    <div :id="'html-designer-' + _uid + '-container'" class="h-100">
+    <!-- CONTAINER -->
+    <div
+        :id="'html-designer-' + _uid + '-container'"
+        class="h-100">
 
-        <div class="h-100 d-flex d-sm-none justify-content-center align-items-center">
-            <div class="w-75 alert alert-warning text-center">This editor is not supported on devices with a screen width of less than 576 pixels!</div>
+        <!-- MOBILE -->
+        <div
+            class="h-100 d-flex d-sm-none justify-content-center align-items-center">
+
+            <div
+                class="w-75 alert alert-warning text-center">
+                This editor is not supported on devices with a screen width of less than 576 pixels!
+            </div>
+
         </div>
 
-        <div :id="'html-designer-' + _uid + '-editor'" class="h-100 d-none d-sm-block border border-dark ">
-            <slot></slot>
+        <!-- DESIGNER -->
+        <div
+            :id="'html-designer-' + _uid + '-editor'"
+            class="h-100 d-none d-sm-block border border-dark"
+            v-html="value">
         </div>
-
-        <!--<div id="#blocks"></div>-->
-
-
-
 
     </div>
 
@@ -23,7 +31,7 @@
 
     import grapes from "grapesjs";
 
-    import webpage from "grapesjs-preset-webpage"
+    import "grapesjs-preset-webpage"
 
 
     export default {
@@ -34,7 +42,20 @@
 
         props: {
 
+            value: String,
+
         },
+
+        watch: {
+
+            value: function(current, previous)
+            {
+
+
+            },
+
+        },
+
 
         data () {
             return {
