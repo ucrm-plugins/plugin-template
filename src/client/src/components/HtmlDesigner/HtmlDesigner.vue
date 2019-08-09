@@ -34,6 +34,8 @@
     import "grapesjs-preset-webpage"
     import "grapesjs-tooltip"
 
+    import "./components/dynamics"
+
 
     export default {
         name: "HtmlDesigner",
@@ -89,6 +91,7 @@
 
                 plugins: [
                     'gjs-preset-webpage',
+                    "dynamics",
                 ],
 
                 pluginsOpts: {
@@ -120,6 +123,11 @@
                     }
                 },
 
+                blocks: [
+
+
+                ]
+
 
 
 
@@ -131,6 +139,19 @@
                 editor.Panels.getButton('options', 'sw-visibility').set('active', 1);
             });
 
+
+            this.editor.BlockManager.add(
+                "dynamic-field",
+                {
+                    label: "Data Field",
+                    category: "Dynamic",
+                    //content: "{%  %}",
+                    select: true,
+
+
+
+                }
+            );
 
 
 
