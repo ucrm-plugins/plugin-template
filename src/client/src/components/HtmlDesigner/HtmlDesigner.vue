@@ -32,6 +32,7 @@
     import grapes from "grapesjs";
 
     import "grapesjs-preset-webpage"
+    import "grapesjs-tooltip"
 
 
     export default {
@@ -87,19 +88,47 @@
                 styleManager: {},
 
                 plugins: [
-                    'gjs-preset-webpage'
-                    //blocks
-
+                    'gjs-preset-webpage',
                 ],
 
                 pluginsOpts: {
+
                     'gjs-preset-webpage': {
                         // options
+                        blocks: [
+                        ],
+
+                        blocksBasicOpts: {
+                            // Include all blocks by default!
+                        },
+
+                        navbarOpts: {
+                            // Hide all navbar blocks, as they are not supported in email messages.
+                            blocks: []
+                        },
+
+                        countdownOpts: {
+                            // Hide all countdown blocks, as they are not supported in email messages.
+                            blocks: []
+                        },
+
+                        formsOpts: {
+                            // Hide all form blocks, as they are not supported in email messages.
+                            blocks: []
+                        },
+
                     }
-                }
+                },
 
 
 
+
+
+            })
+            .on("load", function(editor)
+            {
+                // Show borders by default
+                editor.Panels.getButton('options', 'sw-visibility').set('active', 1);
             });
 
 
@@ -108,6 +137,7 @@
 
             $(function()
             {
+                /*
                 $(".gjs-radio-item-label[for='float-none']")
                     .text("")
                     .addClass("gjs-sm-icon")
@@ -123,8 +153,64 @@
                     .addClass("gjs-sm-icon")
                     .addClass("fa")
                     .addClass("fa-align-right");
+                */
 
 
+
+                $(".gjs-pn-buttons span.gjs-pn-btn")
+                    .attr("data-toggle", "popover")
+                    .attr("data-placement", "bottom")
+                    .attr("data-trigger", "hover");
+
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-desktop']")
+                    .attr("data-content", "Desktop");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-tablet']")
+                    .attr("data-content", "Tablet");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-mobile']")
+                    .attr("data-content", "Mobile");
+
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-square-o']")
+                    .attr("data-content", "Show Borders");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-eye']")
+                    .attr("data-content", "Preview");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-arrows-alt']")
+                    .attr("data-content", "Fullscreen");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-code']")
+                    .attr("data-content", "Export");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-undo']")
+                    .attr("data-content", "Undo");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-repeat']")
+                    .attr("data-content", "Redo");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-download']")
+                    .attr("data-content", "Import");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-trash']")
+                    .attr("data-content", "Clear Canvas");
+
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-paint-brush']")
+                    .attr("data-content", "Styles");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-cog']")
+                    .attr("data-content", "Traits");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-bars']")
+                    .attr("data-content", "Layers");
+                $(".gjs-pn-buttons span.gjs-pn-btn[class*='fa-th-large']")
+                    .attr("data-content", "Blocks");
+
+                $(".gjs-blocks-c div.gjs-block")
+                    .attr("data-toggle", "popover")
+                    .attr("data-placement", "bottom")
+                    .attr("data-trigger", "hover")
+                    .each(function()
+                    {
+                        $(this).attr("data-content", $(this).attr("title"));
+                    })
+                    .attr("title", "");
+
+
+
+
+
+
+                $('[data-toggle="popover"]').popover();
 
             });
 
@@ -134,130 +220,64 @@
     }
 </script>
 
-<style lang="scss">
-    //@import "./plugins/grapesjs-preset-webpage/style/main.scss";
-</style>
 
 <!--suppress CssFloatPxLength, CssUnusedSymbol -->
 <style lang="stylus">
     @import "../../../node_modules/grapesjs/dist/css/grapes.min.css";
 
-
     rem2px(value)
         unit(value) is "rem" ? unit(value * 16, "px") : unit(value, unit(value))
 
-    editor-min-width        = 576px - rem2px(2rem) + 2px                            // 546px
-    canvas-min-width        = 320px                                                 // 320px
-    panels-min-width        = editor-min-width - canvas-min-width                   // 226px
-    canvas-min-percentage   = unit( ( 320px / editor-min-width ) * 100, "%")        // 58.60805860805861%
-    panels-min-percentage   = 100% - canvas-min-percentage                          // 41.39194139194139%
+    // NOTE: Change the padding here manually, as needed!                              @screen = 576px
+    editor-width        = 576px - 2px - rem2px(2rem)                                // 542px
+    canvas-width        = 320px                                                     // 320px
+    panels-width        = editor-width - canvas-width                               // 222px
+    canvas-percentage   = unit( ( canvas-width / editor-width ) * 100, "%")         // 59.040590405904055%
+    panels-percentage   = 100% - canvas-percentage                                  // 40.959409594095945%
 
+    // Set specific sizing for supported mobile displays.
     @media screen and (min-width: 576px)
         .gjs-pn-views, .gjs-pn-views-container
-            //min-width panels-min-width
-            width panels-min-percentage
+            width panels-width
         .gjs-pn-options
-            right panels-min-percentage
+            z-index 5
+            right "calc( %s - ( 35px * 2 ) - 5px )" % panels-width
         .gjs-cv-canvas, .gjs-pn-commands
-            min-width canvas-min-width
-            width canvas-min-percentage
-
+            width "calc( 100% - %s )" % panels-width
         .gjs-pn-devices-c
             z-index 6
 
-        .gjs-pn-options
-            z-index 5
-            //right calc(41.39194139194139% - ( 35px * 2 ) - 5px )
-            right "calc( %s - ( 35px * 2 ) - 5px )" % panels-min-percentage
-
-        /*
-        .gjs-pn-btn.fa.fa-square-o
-            position relative
-            right -( (35px * 9) + 5px)
-        .gjs-pn-btn.fa.fa-eye
-            position relative
-            right -( (35px * 7) + 5px)
-        */
-
-
-
+    // Reset sizing for non-mobile displays.
     @media screen and (min-width: 768px)
         .gjs-pn-views, .gjs-pn-views-container
-            width 30%
-        .gjs-pn-options
-            right 30%
-        .gjs-cv-canvas, .gjs-pn-commands
-            width 70%
-
-        .gjs-pn-devices-c
-            z-index 3
+            width panels-width
         .gjs-pn-options
             z-index 4
-            right 30%
-
-
-        /*
-        .gjs-pn-btn.fa.fa-square-o
-            position inherit
-            right 0
-        .gjs-pn-btn.fa.fa-eye
-            position inherit
-            right 0
-        */
-
+            right panels-width
+        .gjs-cv-canvas, .gjs-pn-commands
+            width "calc( 100% - %s )" % panels-width
+        .gjs-pn-devices-c
+            z-index 3
 
     //@media screen and (min-width: 992px)
     //@media screen and (min-width: 1200px)
 
-
-    .gjs-devices-c
-        width 170px
-        //padding 0
-
-
+    // Remove the extra margin on the rightmost buttons in each group.
     .gjs-pn-buttons
         justify-content flex-end
         > span:last-child
             margin-right 0
 
+    //.gjs-am-assets
+        //height auto
 
+    // Fixup sizing in image upload dialog!
     .gjs-am-file-uploader form
         height 325px
-        margin-bottom 0
 
-    #gjs-am-uploadFile
-        position relative
-        height 100%
-        border none
-
-
-    //.gjs-editor
-        //font-size 0.75rem
-
-    .gjs-editor select
-        background-image unset
-        height auto
-
-    .gjs-editor input[type]
-        height: auto
-
-    .gjs-editor input[type=radio]+label
-        margin-left auto
-        //font-size 1rem
-        line-height normal
-        margin-bottom 0
-
-
-
-
-
-
-    //.gjs-pn-btn.fa.fa-undo
-    //    position absolute
-    //    right -20px
-    //    z-index -1000
-
-
+    // Override conflicting Bootstrap styles.
+    label, form
+        margin-bottom 0 !important
 
 
 
