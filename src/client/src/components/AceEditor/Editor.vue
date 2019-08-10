@@ -708,7 +708,7 @@
 
                 // Initiate an AJAX request to GET the database schema from the back-end API...
                 self.request = $.ajax({
-                    url: "../public.php?/api/psql/schemas",
+                    url: "public.php?/api/psql/schemas",
                     method: "GET",
 
                     // Handle successful data acquisition...

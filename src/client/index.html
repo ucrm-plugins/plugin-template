@@ -11,7 +11,12 @@
     UCRM Built-In Fonts, Themes & Styles
     ------------------------------------------------------------------------------------------------------------------->
 
+    <!--
+    <base href="https://unms.mvqn.net/crm<%= BASE_URL %>">
+    -->
+
     <script>
+        /*
         let prefix = "";
         let version = "";
 
@@ -39,7 +44,6 @@
         //console.log(prefix);
         //console.log(version);
 
-        /*
         document.write(
             '<!--suppress SpellCheckingInspection -->' +
             '<link rel="stylesheet" ' +
@@ -60,12 +64,12 @@
         document.write(
             '<link rel="stylesheet" ' +
                   'href="' + prefix + '/dist/main.min.css' + version + '">');
+
         */
-
-
     </script>
 
-    <link rel="icon" href="favicon.ico">
+
+    <link rel="icon" href="public/favicon.ico">
 
     <!------------------------------------------------------------------------------------------------------------------
     FontAwesome Styles
@@ -102,11 +106,11 @@
     ------------------------------------------------------------------------------------------------------------------->
     <link
         rel="stylesheet"
-        href="css/main.css">
+        href="public/css/main.css">
 
     <link
         rel="stylesheet"
-        href="css/switch.css">
+        href="public/css/switch.css">
 
     <style>
         body { min-width: 320px; }
@@ -174,14 +178,36 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.12.17/grapes.min.js"></script>
 -->
 
-<script src="js/iframe.js"></script>
-<script src="js/filter.js"></script>
+<script src="<%= BASE_URL %>js/iframe.js"></script>
+<script src="<%= BASE_URL %>js/filter.js"></script>
 
 
 
 <script>
 
     $(function() {
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+
+
+        //console.log(getCookie("PHPSESSID"));
+        //console.log(getCookie("nms-crm-php-session-id"));
+        //console.log(getCookie("nms-session"));
 
     });
 

@@ -13,6 +13,7 @@ function publicPath()
 {
     switch(process.env.NODE_ENV)
     {
+        //case "production"   : return "/_plugins/" + pluginName() + "/public.php?/app/";
         case "production"   : return "/_plugins/" + pluginName() + "/public/";
         case "development"  : return "/public/";
         default             : return "/public/"; // NOTE: This would catch modes like "test"...
@@ -24,7 +25,20 @@ module.exports = {
 
     publicPath: publicPath(),
 
+    indexPath: "../index.html",
+    //assetsDir: "../app/",
     outputDir: "../public/",
+
+
+    chainWebpack: function(config)
+    {
+        config.plugin("html")
+            .tap(args => {
+                args[0].template = "index.html";
+                return args;
+            });
+    },
+
 
     devServer: {
 
@@ -91,7 +105,7 @@ module.exports = {
                     // IF the requested URL is the server-side front-controller "/public.php?/"...
                     if(req.url === "/public.php?/")
                     // ...THEN serve the client-side "/index.html" as if it were served by the server.
-                        return "/public/index.html";
+                        return "/app/index.html";
 
                     // IF the requested URL is a variant of the server-side front-controller "/public.php[?]"...
                     if(req.url === "/public.php" || req.url === "/public.php?")

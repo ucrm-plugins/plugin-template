@@ -25,21 +25,28 @@ require_once __DIR__ . "/vendor/autoload.php";
  */
 if (isset($_SERVER) && isset($_SERVER["REQUEST_URI"]))
 {
-    if(strpos($_SERVER["REQUEST_URI"], "/public.php") !== false)
-    {
-        $uri = substr($_SERVER["REQUEST_URI"], strpos($_SERVER["REQUEST_URI"], "/public.php"));
+    $uri = $_SERVER["REQUEST_URI"];
 
-        if ($uri === "/public.php" ||
-            $uri === "/public.php?" ||
-            $uri === "/public.php?/" ||
-            $uri === "/public.php?/index.html" ||
-            strpos($uri, "/public.php?/index.html") === 0)
-        {
-            //echo file_get_contents(__DIR__."/../public/index.html");
-            header("Location: public/index.html");
-            exit();
-        }
+    if ($uri === "/public.php?" ||
+        $uri === "/public.php?/" ||
+        $uri === "/public.php?/index.html" ||
+        strpos($uri, "/public.php?/index.html") !== false)
+    {
+        //echo "TEST";
+        //var_dump($_SERVER);
+        //exit();
+        $uri = $_SERVER["REQUEST_URI"] = "/public.php";
+        unset($_SERVER["QUERY_STRING"]);
+
+        header("Location: public.php");
     }
+
+    if($uri === "/public.php")
+    {
+        echo file_get_contents(__DIR__."/../app/index.html");
+        exit();
+    }
+
 }
 
 // =====================================================================================================================
@@ -287,7 +294,7 @@ $app->add(new PluginAuthentication($container,
 ));
 
 // Use our custom QueryStringRouter middleware to route our Plugin URLs, setting the default URL...
-$app->add(new QueryStringRouter("/index.html"));
+$app->add(new QueryStringRouter("/../index.html"));
 
 /**
  * WARNING: The above QueryStringRouter middleware bypasses the current restrictions that UCRM places on Plugins with

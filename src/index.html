@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>Plugin Template</title><script>/*
+        let prefix = "";
+        let version = "";
+
+        if(window.location.pathname.startsWith("/crm"))
+        {
+            let element = window.parent.document.getElementById("header-version__version");
+
+            prefix = "/crm";
+            version = element ? "?v=" + element.innerText : "";
+
+            // UNMS v1.X to UCRM v3.X
+            version = version.replace("?v=1.", "?v=3.");
+        }
+        else
+        {
+            let elements = document.getElementsByClassName("appGlobalHeader__versionItem");
+            let element = elements && elements.length > 0 ? elements[0] : null;
+
+            prefix = "";
+            version = element ? "?v=" + element.getAttribute("data-clipboard-text") : "";
+        }
+
+        document.write('<base href="' + prefix + '/_plugins/plugin-template/public/">');
+
+        //console.log(prefix);
+        //console.log(version);
+
+        document.write(
+            '<!--suppress SpellCheckingInspection -->' +
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/lato/lato.css' + version + '">');
+        document.write(
+            '<!--suppress SpellCheckingInspection -->' +
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/ubnt-icon/ubnt-icon.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/fonts/ucrm-icon/style.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/assets/vendor/leaflet/leaflet.css' + version + '">');
+        document.write(
+            '<link rel="stylesheet" ' +
+                  'href="' + prefix + '/dist/main.min.css' + version + '">');
+
+        */</script><link rel=icon href=public/favicon.ico><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.7.2/css/all.css integrity=sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr crossorigin=anonymous><link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T crossorigin=anonymous><link href=//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css type=text/css rel=stylesheet><link type=text/css rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css><link type=text/css rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css><link rel=stylesheet href=public/css/main.css><link rel=stylesheet href=public/css/switch.css><style>body { min-width: 320px; }</style><link href=/_plugins/plugin-template/public/css/app.ded8d21b.css rel=preload as=style><link href=/_plugins/plugin-template/public/css/chunk-vendors.d20daefd.css rel=preload as=style><link href=/_plugins/plugin-template/public/js/app.e2b577c8.js rel=preload as=script><link href=/_plugins/plugin-template/public/js/chunk-vendors.bc290f4d.js rel=preload as=script><link href=/_plugins/plugin-template/public/css/chunk-vendors.d20daefd.css rel=stylesheet><link href=/_plugins/plugin-template/public/css/app.ded8d21b.css rel=stylesheet></head><body><noscript><strong>We're sorry but plugin-template doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script src=https://code.jquery.com/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script src=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js integrity=sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js integrity="sha256-wTJ28YyR8Fw1kZMGFZzHZzg/GL6jvC+Cx0fYFHyeylI=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-themelist.js integrity="sha256-w2Gn3AR7rxC3tFeVWgMrP5q8QXbe29xudZyQ3d2Z6XI=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-modelist.js integrity="sha256-Eq83mfVraqpouXYtwjYSEvTt6JM7k1VrhsebwRs06AM=" crossorigin=anonymous></script><script src=/_plugins/plugin-template/public/js/iframe.js></script><script src=/_plugins/plugin-template/public/js/filter.js></script><script>$(function() {
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+
+
+        //console.log(getCookie("PHPSESSID"));
+        //console.log(getCookie("nms-crm-php-session-id"));
+        //console.log(getCookie("nms-session"));
+
+    });</script><script src=/_plugins/plugin-template/public/js/chunk-vendors.bc290f4d.js></script><script src=/_plugins/plugin-template/public/js/app.e2b577c8.js></script></body></html>
