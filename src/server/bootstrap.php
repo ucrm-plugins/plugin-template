@@ -1,66 +1,87 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . "/vendor/autoload.php";
 
-/**
+/***********************************************************************************************************************
  * bootstrap.php
+ * ---------------------------------------------------------------------------------------------------------------------
+ * A common configuration and initialization file for all included Plugin scripts.
  *
- * A common configuration and initialization file for all UCRM Plugins.
- *
- * @author Ryan Spaeth <rspaeth@mvqn.net>
+ * @author      Ryan Spaeth <rspaeth@mvqn.net>
+ * @copyright   2019 Spaeth Technologies, Inc.
  */
 
-/* =====================================================================================================================
- * REDIRECT CASES
- * =====================================================================================================================
+// Get and define the Plugin's name and base "production" URL.
+define("PLUGIN_NAME", json_decode(file_get_contents(__DIR__ . "/../manifest.json"), true)["information"]["name"]);
+define("PLUGIN_BASE_URL", "/_plugins/" . PLUGIN_NAME . "/");
+
+/* *********************************************************************************************************************
+ * REQUEST MANIPULATION
+ * ---------------------------------------------------------------------------------------------------------------------
  * NOTES:
- * - This fixes any issues with the new vue-router trying to pass the query param ?/ and mangling the URL.
- *   .../public.php                 => .../public/
- *   .../public.php?                => .../public/
- *   .../public.php?/               => .../public/
- *   .../public.php?/index.html     => .../public/
- *   .../public.php?/index.html&... => .../public/
- *
+ * - This fixes any issues with the new vue-router mangling the request with the query string.
  * - We also drop ALL query params that may be incoming for the SPA, as they are irrelevant at this point!
+ * - Only web requests will be handled here, as this section will be skipped when inclusion occurs by a CLI script.
+ *
+ * EXAMPLES:
+ *   .../public.php?                => .../public.php
+ *   .../public.php?/               => .../public.php
+ *   .../public.php?/index.html     => .../public.php
+ *   .../public.php?/index.html&... => .../public.php
  */
 if (isset($_SERVER) && isset($_SERVER["REQUEST_URI"]))
 {
+    // ...THEN get the current request URI and continue.
     $uri = $_SERVER["REQUEST_URI"];
 
+    $uri = str_replace("/crm/", "/", $uri);
+    $uri = str_replace(PLUGIN_BASE_URL, "/", $uri);
+
+    //var_dump($uri);
+
+    // IF the request is any partial variation of the front-controller's root route...
     if ($uri === "/public.php?" ||
         $uri === "/public.php?/" ||
         $uri === "/public.php?/index.html" ||
         strpos($uri, "/public.php?/index.html") !== false)
     {
-        //echo "TEST";
-        //var_dump($_SERVER);
-        //exit();
+        // ...THEN we need to "clean" the URI...
         $uri = $_SERVER["REQUEST_URI"] = "/public.php";
         unset($_SERVER["QUERY_STRING"]);
 
+        //var_dump("TEST1");
+
+        // ...AND redirect to the root route!
         header("Location: public.php");
+        exit();
+
+        // NOTE: The above is now necessary, due to the new vue-router mangling the query string and causing issues!
     }
 
+    // IF the URI matches the front-controller's root route (regardless of being "cleaned" or by direct request)...
     if($uri === "/public.php")
     {
+        //var_dump("TEST2");
+        // ...THEN serve the client application's index.html and hand-off control!
         echo file_get_contents(__DIR__."/../index.html");
         exit();
+
+        // NOTE: No further handling needs to be performed by our front-controller on this request.
     }
 
+    // OTHERWISE, we need to let the front-controller handle the request directly...
 }
 
-// =====================================================================================================================
-// AUTOLOADER ALIASES
-// =====================================================================================================================
 
-require_once __DIR__."/vendor/autoload.php";
+
+//#region Autoloader & Aliases
+
+require_once __DIR__ . "/vendor/autoload.php";
 
 use MVQN\Localization\Translator;
 use MVQN\Localization\Exceptions\TranslatorException;
 use MVQN\REST\RestClient;
 use MVQN\Twig\Extensions\SwitchExtension;
 
-use Slim\Router;
 use UCRM\Common\Config;
 use UCRM\Common\Log;
 use UCRM\Common\Plugin;
@@ -69,20 +90,21 @@ use UCRM\HTTP\Slim\Middleware\QueryStringRouter;
 use UCRM\HTTP\Slim\Middleware\PluginAuthentication;
 use UCRM\Sessions\SessionUser;
 
-use App\Settings;
-
 use Slim\Container;
+use Slim\Router;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Slim\Views\TwigExtension;
 
-// =====================================================================================================================
-// PLUGIN ECOSYSTEM
-// =====================================================================================================================
+use App\Settings;
 
-// Initialize the Plugin libraries using this directory as the plugin root and passing along any desired options.
+//#endregion
+
+//#region Initialization
+
+// Initialize the Plugin SDK using this directory as the plugin root and passing along any desired options.
 /** @noinspection PhpUnhandledExceptionInspection */
 Plugin::initialize(__DIR__ . "/../", [
     "modules" => [
@@ -96,17 +118,21 @@ Plugin::initialize(__DIR__ . "/../", [
 /** @noinspection PhpUnhandledExceptionInspection */
 Plugin::createSettings("App", "Settings", __DIR__);
 
-// =====================================================================================================================
-// ENVIRONMENT
-// =====================================================================================================================
+//#endregion
+
+//#region Environment
+
+// TODO: Move this into Plugin::initialize() ???
 
 // IF an .env file exists in the project, THEN load it!
 if(file_exists(__DIR__."/../.env"))
     (new \Dotenv\Dotenv(__DIR__."/../"))->load();
 
-// =====================================================================================================================
-// REST CLIENT
-// =====================================================================================================================
+//#endregion
+
+//#region REST Client
+
+// TODO: Move this into Plugin::initialize() ???
 
 // Generate the REST API URL from either an ENV variable (including from .env file), or fallback to localhost.
 $restUrl =
@@ -139,9 +165,11 @@ catch(\Exception $e)
     Log::error($e->getMessage());
 }
 
-// =====================================================================================================================
-// LOCALIZATION
-// =====================================================================================================================
+//#endregion
+
+//#region Localization
+
+// TODO: Move this into Plugin::initialize() ???
 
 // Attempt to set the dictionary directory and "default" locale...
 try
@@ -153,12 +181,12 @@ try
 catch (TranslatorException $e)
 {
     // TODO: Determine if we should simply fallback to "en-US" in the case of failure.
-    Log::http("No dictionary could be found!", 500);
+    Log::http("No dictionary could be found!");
 }
 
-// =====================================================================================================================
-// ROUTING (SLIM)
-// =====================================================================================================================
+//#endregion
+
+//#region Routing & Dependency Injection (Slim)
 
 // Create Slim Framework Application, given the provided settings.
 $app = new \Slim\App([
@@ -169,16 +197,12 @@ $app = new \Slim\App([
     ],
 ]);
 
-// =====================================================================================================================
-// DEPENDENCY INJECTION
-// =====================================================================================================================
-
 // Get a reference to the DI Container included with the Slim Framework.
 $container = $app->getContainer();
 
-// =====================================================================================================================
-// RENDERING (TWIG)
-// =====================================================================================================================
+//#endregion
+
+//#region Templating & Rendering (Twig)
 
 // Configure the Slim/Twig Renderer...
 $container["twig"] = function (Container $container)
@@ -216,8 +240,6 @@ $container["twig"] = function (Container $container)
     return $twig;
 };
 
-// ---------------------------------------------------------------------------------------------------------------------
-
 // Override the default 404 page...
 $container['notFoundHandler'] = function (Container $container)
 {
@@ -239,12 +261,14 @@ $container['notFoundHandler'] = function (Container $container)
     };
 };
 
+//#endregion
+
 // =====================================================================================================================
 // LOGGING (MONOLOG)
 // =====================================================================================================================
 
-
 // TODO: Begin to convert our existing logging system to be more accommodating for the MonoLog system.
+
 // Configure MonoLog...
 $container["logger"] = function (/** @noinspection PhpUnusedParameterInspection */ \Slim\Container $container)
 {
@@ -262,10 +286,7 @@ $container["logger"] = function (/** @noinspection PhpUnusedParameterInspection 
 };
 
 
-
-// =====================================================================================================================
-// MIDDLEWARE (SLIM)
-// =====================================================================================================================
+//#region Middleware (Slim)
 
 // NOTE: Middleware is handled in ascending order, starting with the last middleware added!
 
@@ -317,3 +338,5 @@ $app->add(new QueryStringRouter("/index.html"));
  *
  * Visit https://github.com/mvqn/ucrm-plugin-sdk for additional information on my extended UCRM SDK.
  */
+
+//#endregion

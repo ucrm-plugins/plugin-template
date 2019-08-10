@@ -104,7 +104,7 @@ module.exports = {
                     // IF the requested URL is the server-side front-controller "/public.php?/"...
                     if(req.url === "/public.php?/")
                     // ...THEN serve the client-side "/index.html" as if it were served by the server.
-                        return "/app/index.html";
+                        return "/index.html";
 
                     // IF the requested URL is a variant of the server-side front-controller "/public.php[?]"...
                     if(req.url === "/public.php" || req.url === "/public.php?")
