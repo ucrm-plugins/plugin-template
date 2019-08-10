@@ -43,7 +43,7 @@ if (isset($_SERVER) && isset($_SERVER["REQUEST_URI"]))
 
     if($uri === "/public.php")
     {
-        echo file_get_contents(__DIR__."/../app/index.html");
+        echo file_get_contents(__DIR__."/../index.html");
         exit();
     }
 
@@ -294,7 +294,7 @@ $app->add(new PluginAuthentication($container,
 ));
 
 // Use our custom QueryStringRouter middleware to route our Plugin URLs, setting the default URL...
-$app->add(new QueryStringRouter("/../index.html"));
+$app->add(new QueryStringRouter("/index.html"));
 
 /**
  * WARNING: The above QueryStringRouter middleware bypasses the current restrictions that UCRM places on Plugins with

@@ -454,7 +454,7 @@
             deleteClick() {
 
                 let self = this;
-                let url = "../public.php?/api/logs/";
+                let url = "public.php?/api/logs/";
 
                 // Set the URL based on the log type...
                 switch(self.meta[self.name].type) {
@@ -620,7 +620,7 @@
             getLogs() {
 
                 let self = this;
-                let url = "../public.php?/api/logs";
+                let url = "public.php?/api/logs";
 
                 // Set the loading flag to display the spinner.
                 self.tablesLoading = true;
@@ -667,9 +667,9 @@
                 //console.log(link);
 
                 //if(link === "../plugin.log")
-                //    url = "../public.php?/api/logs/plugin.log";
+                //    url = "public.php?/api/logs/plugin.log";
                 //else
-                let url = "../public.php?/api/logs/" + link;
+                let url = "public.php?/api/logs/" + link;
 
 
                 // Set the loading flag to display the spinner.

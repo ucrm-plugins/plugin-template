@@ -13,7 +13,6 @@ function publicPath()
 {
     switch(process.env.NODE_ENV)
     {
-        //case "production"   : return "/_plugins/" + pluginName() + "/public.php?/app/";
         case "production"   : return "/_plugins/" + pluginName() + "/public/";
         case "development"  : return "/public/";
         default             : return "/public/"; // NOTE: This would catch modes like "test"...

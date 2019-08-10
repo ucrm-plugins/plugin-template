@@ -231,7 +231,7 @@
 
 
                 this.request = $.ajax({
-                    url: "../public.php?/api/psql/format",
+                    url: "public.php?/api/psql/format",
                     method: "POST",
                     data: query,
                     dataType: "text",
@@ -261,7 +261,7 @@
 
                 /*
                 this.request = $.ajax({
-                    url: "../public.php?/api/psql/query",
+                    url: "public.php?/api/psql/query",
                     method: "POST",
                     data: query,
                     dataType: "text",
@@ -347,7 +347,7 @@
             this.tablesLoading = true;
 
             this.request = $.ajax({
-                url: "../public.php?/api/psql/schemas",
+                url: "public.php?/api/psql/schemas",
                 method: "GET",
 
                 // Handle successful data acquisition...

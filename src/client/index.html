@@ -5,71 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <title>Plugin Template</title>
-
-    <!------------------------------------------------------------------------------------------------------------------
-    UCRM Built-In Fonts, Themes & Styles
-    ------------------------------------------------------------------------------------------------------------------->
-
-    <!--
-    <base href="https://unms.mvqn.net/crm<%= BASE_URL %>">
-    -->
-
-    <script>
-        /*
-        let prefix = "";
-        let version = "";
-
-        if(window.location.pathname.startsWith("/crm"))
-        {
-            let element = window.parent.document.getElementById("header-version__version");
-
-            prefix = "/crm";
-            version = element ? "?v=" + element.innerText : "";
-
-            // UNMS v1.X to UCRM v3.X
-            version = version.replace("?v=1.", "?v=3.");
-        }
-        else
-        {
-            let elements = document.getElementsByClassName("appGlobalHeader__versionItem");
-            let element = elements && elements.length > 0 ? elements[0] : null;
-
-            prefix = "";
-            version = element ? "?v=" + element.getAttribute("data-clipboard-text") : "";
-        }
-
-        document.write('<base href="' + prefix + '<%= BASE_URL %>">');
-
-        //console.log(prefix);
-        //console.log(version);
-
-        document.write(
-            '<!--suppress SpellCheckingInspection -->' +
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/assets/fonts/lato/lato.css' + version + '">');
-        document.write(
-            '<!--suppress SpellCheckingInspection -->' +
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/assets/fonts/ubnt-icon/ubnt-icon.css' + version + '">');
-        document.write(
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/assets/fonts/ucrm-icon/style.css' + version + '">');
-        document.write(
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css' + version + '">');
-        document.write(
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/assets/vendor/leaflet/leaflet.css' + version + '">');
-        document.write(
-            '<link rel="stylesheet" ' +
-                  'href="' + prefix + '/dist/main.min.css' + version + '">');
-
-        */
-    </script>
-
-
     <link rel="icon" href="public/favicon.ico">
+
+    <title>Plugin Template</title>
 
     <!------------------------------------------------------------------------------------------------------------------
     FontAwesome Styles
@@ -91,16 +29,6 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
 
-    <!--suppress SpellCheckingInspection -->
-    <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
-
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
-
-    <!--
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.12.17/css/grapes.min.css" />
-    -->
-
     <!------------------------------------------------------------------------------------------------------------------
     Plugin Styles
     ------------------------------------------------------------------------------------------------------------------->
@@ -117,101 +45,68 @@
     </style>
 
 </head>
+
 <body>
 
-<noscript>
-    <strong>We're sorry but plugin-template doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-</noscript>
+    <noscript>
+        <strong>This plugin will not work without JavaScript enabled.  Please enable it to continue.</strong>
+    </noscript>
 
-<div id="app"></div>
-<!-- built files will be auto injected -->
+    <!-- The Vue Application's container -->
+    <div id="app"></div>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-</script>
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
-    crossorigin="anonymous">
-</script>
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous">
+    </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <!--#region Ace Editor Scripts -->
 
-<!--#region Ace Editor Scripts -->
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"
+        integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM="
+        crossorigin="anonymous">
+    </script>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"
-    integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM="
-    crossorigin="anonymous">
-</script>
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js"
+        integrity="sha256-wTJ28YyR8Fw1kZMGFZzHZzg/GL6jvC+Cx0fYFHyeylI="
+        crossorigin="anonymous">
+    </script>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js"
-    integrity="sha256-wTJ28YyR8Fw1kZMGFZzHZzg/GL6jvC+Cx0fYFHyeylI="
-    crossorigin="anonymous">
-</script>
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-themelist.js"
+        integrity="sha256-w2Gn3AR7rxC3tFeVWgMrP5q8QXbe29xudZyQ3d2Z6XI="
+        crossorigin="anonymous">
+    </script>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-themelist.js"
-    integrity="sha256-w2Gn3AR7rxC3tFeVWgMrP5q8QXbe29xudZyQ3d2Z6XI="
-    crossorigin="anonymous">
-</script>
+    <!--suppress SpellCheckingInspection -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-modelist.js"
+        integrity="sha256-Eq83mfVraqpouXYtwjYSEvTt6JM7k1VrhsebwRs06AM="
+        crossorigin="anonymous">
+    </script>
 
-<!--suppress SpellCheckingInspection -->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-modelist.js"
-    integrity="sha256-Eq83mfVraqpouXYtwjYSEvTt6JM7k1VrhsebwRs06AM="
-    crossorigin="anonymous">
-</script>
+    <!--#endregion -->
 
-<!--#endregion -->
+    <script src="public/js/iframe.js"></script>
+    <script src="public/js/filter.js"></script>
 
-<!--
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.12.17/grapes.min.js"></script>
--->
-
-<script src="<%= BASE_URL %>js/iframe.js"></script>
-<script src="<%= BASE_URL %>js/filter.js"></script>
-
-
-
-<script>
-
-    $(function() {
-
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i <ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-
-
-
-        //console.log(getCookie("PHPSESSID"));
-        //console.log(getCookie("nms-crm-php-session-id"));
-        //console.log(getCookie("nms-session"));
-
-    });
-
-</script>
+    <!--
+    NOTE: Built files will be auto injected here...
+    -->
 
 </body>
 </html>

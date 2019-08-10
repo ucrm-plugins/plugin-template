@@ -838,7 +838,7 @@
                 let self = this;
 
                 self.request = $.ajax({
-                    url: "../public.php?/api/psql/tables/" + table,
+                    url: "public.php?/api/psql/tables/" + table,
                     method: "GET",
                     success(data) {
 
