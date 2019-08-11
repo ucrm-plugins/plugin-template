@@ -13,14 +13,14 @@ declare(strict_types=1);
  */
 
 // Get and define the Plugin's name and base "production" URL.
-define("PLUGIN_NAME", json_decode(file_get_contents(__DIR__ . "/manifest.json"), true)["information"]["name"]);
-define("PLUGIN_BASE_URL", "/_plugins/" . PLUGIN_NAME . "/");
+$pluginName = json_decode(file_get_contents(__DIR__ . "/manifest.json"), true)["information"]["name"];
+$pluginBase = "/_plugins/${pluginName}/";
 
 // IF the current request contains the above base URL...
-if(strpos($_SERVER["REQUEST_URI"], PLUGIN_BASE_URL) !== false)
+if(isset($_SERVER) && isset($_SERVER["REQUEST_URI"]) && strpos($_SERVER["REQUEST_URI"], $pluginBase) !== false)
 {
     // ...THEN "rewrite" the URL by stripping the base URL from the request.
-    $rewrite = str_replace(PLUGIN_BASE_URL, "/", $_SERVER["REQUEST_URI"]);
+    $rewrite = preg_replace("#(/crm)?${pluginBase}#", "/", $_SERVER["REQUEST_URI"]);
 
     // And then redirect the request to the local server's equivalent URL.
     // NOTE: This will include any query parameters as well!

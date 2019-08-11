@@ -10,15 +10,11 @@ declare(strict_types=1);
  * @copyright   2019 Spaeth Technologies, Inc.
  */
 
-// Get and define the Plugin's name and base "production" URL.
-define("PLUGIN_NAME", json_decode(file_get_contents(__DIR__ . "/../manifest.json"), true)["information"]["name"]);
-define("PLUGIN_BASE_URL", "/_plugins/" . PLUGIN_NAME . "/");
+//#region Request Manipulation
 
 /* *********************************************************************************************************************
- * REQUEST MANIPULATION
- * ---------------------------------------------------------------------------------------------------------------------
  * NOTES:
- * - This fixes any issues with the new vue-router mangling the request with the query string.
+ * - This fixes the issues with the new vue-router mangling the request with the query string.
  * - We also drop ALL query params that may be incoming for the SPA, as they are irrelevant at this point!
  * - Only web requests will be handled here, as this section will be skipped when inclusion occurs by a CLI script.
  *
@@ -30,13 +26,14 @@ define("PLUGIN_BASE_URL", "/_plugins/" . PLUGIN_NAME . "/");
  */
 if (isset($_SERVER) && isset($_SERVER["REQUEST_URI"]))
 {
-    // ...THEN get the current request URI and continue.
-    $uri = $_SERVER["REQUEST_URI"];
+    // Get the Plugin's name and base "production" URL.
+    $pluginName = json_decode(file_get_contents(__DIR__ . "/../manifest.json"), true)["information"]["name"];
+    $pluginBase = "/_plugins/${pluginName}/";
 
-    $uri = str_replace("/crm/", "/", $uri);
-    $uri = str_replace(PLUGIN_BASE_URL, "/", $uri);
+    // Strip the Plugin's base from the URI, so we have the actual request URI.
+    $uri = preg_replace("#(/crm)?${pluginBase}#", "/", $_SERVER["REQUEST_URI"]);
 
-    //var_dump($uri);
+    // NOTE: Here we only remove the base from the URI for examination, not from the actual request!
 
     // IF the request is any partial variation of the front-controller's root route...
     if ($uri === "/public.php?" ||
@@ -44,34 +41,19 @@ if (isset($_SERVER) && isset($_SERVER["REQUEST_URI"]))
         $uri === "/public.php?/index.html" ||
         strpos($uri, "/public.php?/index.html") !== false)
     {
-        // ...THEN we need to "clean" the URI...
+        // ...THEN we need to "clean" the URI, unset any query parameters...
         $uri = $_SERVER["REQUEST_URI"] = "/public.php";
         unset($_SERVER["QUERY_STRING"]);
-
-        //var_dump("TEST1");
 
         // ...AND redirect to the root route!
         header("Location: public.php");
         exit();
-
-        // NOTE: The above is now necessary, due to the new vue-router mangling the query string and causing issues!
     }
 
-    // IF the URI matches the front-controller's root route (regardless of being "cleaned" or by direct request)...
-    if($uri === "/public.php")
-    {
-        //var_dump("TEST2");
-        // ...THEN serve the client application's index.html and hand-off control!
-        echo file_get_contents(__DIR__."/../index.html");
-        exit();
-
-        // NOTE: No further handling needs to be performed by our front-controller on this request.
-    }
-
-    // OTHERWISE, we need to let the front-controller handle the request directly...
+    // NOW, we can let the front-controller handle the request directly...
 }
 
-
+//#endregion
 
 //#region Autoloader & Aliases
 
@@ -315,7 +297,7 @@ $app->add(new PluginAuthentication($container,
 ));
 
 // Use our custom QueryStringRouter middleware to route our Plugin URLs, setting the default URL...
-$app->add(new QueryStringRouter("/index.html"));
+$app->add(new QueryStringRouter("/../index.html"));
 
 /**
  * WARNING: The above QueryStringRouter middleware bypasses the current restrictions that UCRM places on Plugins with
