@@ -245,29 +245,6 @@ $container['notFoundHandler'] = function (Container $container)
 
 //#endregion
 
-// =====================================================================================================================
-// LOGGING (MONOLOG)
-// =====================================================================================================================
-
-// TODO: Begin to convert our existing logging system to be more accommodating for the MonoLog system.
-
-// Configure MonoLog...
-$container["logger"] = function (/** @noinspection PhpUnusedParameterInspection */ \Slim\Container $container)
-{
-    // Create a new Logger with a context for this Plugin and some defaults...
-    $logger = new Monolog\Logger("plugin");
-    //$logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    $logger->pushProcessor(new Monolog\Processor\IntrospectionProcessor());
-    $logger->pushProcessor(new Monolog\Processor\WebProcessor());
-    if(PHP_SAPI === "cli-server")
-        $logger->pushHandler(new Monolog\Handler\StreamHandler("php://stdout", \Monolog\Logger::DEBUG));
-    $logger->pushHandler(new Monolog\Handler\StreamHandler(__DIR__ . "/data/logs/www.log", \Monolog\Logger::DEBUG));
-
-    // Finally, return the new Logger.
-    return $logger;
-};
-
-
 //#region Middleware (Slim)
 
 // NOTE: Middleware is handled in ascending order, starting with the last middleware added!
