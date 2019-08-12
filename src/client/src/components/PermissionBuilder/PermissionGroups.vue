@@ -317,6 +317,29 @@
 
         methods: {
 
+            moveToAllowed: function(groups)
+            {
+                this.selectedAvailable = groups;
+
+                this.$nextTick(function()
+                {
+                    $("#addAvailableButton").click();
+                });
+
+            },
+
+            moveToAvailable: function(groups)
+            {
+                this.selectedAllowed = groups;
+
+                this.$nextTick(function()
+                {
+                    $("#addAllowedButton").click();
+                });
+
+            },
+
+
             //#region Event Handlers
 
             availableSelectionChanged: function()
@@ -526,14 +549,23 @@
                 .then(function(response)
                 {
                     let names = [];
+                    let allowed = [];
 
                     response.data.forEach(function(group)
                     {
                         if(group.allowed === "1")
+                        {
                             names.push(group.group);
+
+                            if(self.available.includes(group.group))
+                                allowed.push(group.group);
+                        }
                     });
 
-                    self.allowed = names;
+                    //self.allowed = names;
+
+                    self.moveToAllowed(allowed);
+
                     self.allowedLoading = false;
                 })
                 .catch(function(error)
