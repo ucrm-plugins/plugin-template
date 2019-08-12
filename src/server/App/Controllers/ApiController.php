@@ -38,6 +38,8 @@ final class ApiController
 
             new API\PsqlController($app);
 
+            new API\PermissionsController($app);
+
             //
             // NOTE: Include any additional common API Controllers here...
             //

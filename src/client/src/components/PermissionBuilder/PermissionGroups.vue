@@ -500,7 +500,7 @@
             this.availableLoading = true;
 
             axios
-                .get("public.php?/api/psql/user-groups")
+                .get("public.php?/api/permissions/groups")
                 .then(function(response)
                 {
                     let names = [];
@@ -517,6 +517,31 @@
                 {
                     console.log(error);
                 });
+
+
+            this.allowedLoading = true;
+
+            axios
+                .get("public.php?/api/permissions/groups/allowed")
+                .then(function(response)
+                {
+                    let names = [];
+
+                    response.data.forEach(function(group)
+                    {
+                        if(group.allowed === "1")
+                            names.push(group.group);
+                    });
+
+                    self.allowed = names;
+                    self.allowedLoading = false;
+                })
+                .catch(function(error)
+                {
+                    console.log(error);
+                });
+
+
 
 
 
@@ -587,7 +612,7 @@
         transition transform 0.3s ease-in-out
 
 
-#available-groups-loading
+#available-groups-loading, #allowed-groups-loading
     position absolute
     width 100%
 
