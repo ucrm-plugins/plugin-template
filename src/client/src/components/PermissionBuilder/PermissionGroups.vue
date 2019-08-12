@@ -1,119 +1,128 @@
 <template>
-    <div class="card">
+    <div class="card mb-3">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Group Permissions</h5>
-            <button class="btn p-0" data-toggle="collapse" data-target=".card-body" aria-expanded="true">
-                <i class="fas fa-chevron-down"></i>
+            <button
+                ref="collapseButton"
+                class="collapse-button btn p-0"
+                data-toggle="collapse"
+                :data-target="'#collapse-' + _uid"
+                aria-expanded="true"
+                @click="collapseClicked"
+            >
+                <i ref="collapseIcon" class="collapse-icon fas" :class="[ 'fa-chevron-' + (startExpanded ? 'down' : 'up') ]"  ></i>
             </button>
         </div>
 
-        <div class="card-body collapse show in">
-            <div class="d-flex">
+        <div ref="collapse" :id="'collapse-' + _uid" class="collapse in show" >
 
-                <div class="col-5 h-100 p-0 ">
-                    <div class="form-group h-100 mb-0 d-flex flex-column">
-                        <label
-                            for="available-groups"
-                            class="d-flex mb-2"
-                        >
-                            Available Groups
-                        </label>
-                        <select
-                            id="available-groups"
-                            class="form-control d-flex"
-                            multiple
-                            @change="availableSelectionChanged"
-                            @blur="blurAvailableGroups"
-                        >
-                            <option
-                                v-for="(item, index) in sortedAvailable"
-                                :value="item"
+            <div class="card-body">
+                <div class="d-flex">
+
+                    <div class="col-5 h-100 p-0 ">
+                        <div class="form-group h-100 mb-0 d-flex flex-column">
+                            <label
+                                for="available-groups"
+                                class="d-flex mb-2"
                             >
-                                {{ item }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-2 d-flex flex-column">
-                    <div class="d-flex">
-                        <label
-                            class="sr-only">
-                            Controls
-                        </label>
-                        <label
-                            class="d-flex mb-2 justify-content-center">
-                            &nbsp;
-                        </label>
-                    </div>
-                    <div class="d-flex flex-grow-1 align-items-center">
-                        <div id="control-buttons" class="d-flex flex-column w-100">
-                            <button
-                                id="allAvailableButton"
-                                class="btn btn-block btn-primary"
-                                @click="allSelectedAvailableClicked"
-                                :disabled="available.length === 0">
-                                <i class="fas fa-angle-double-right"></i>
-                            </button>
-                            <button
-                                id="addAvailableButton"
-                                class="btn btn-block btn-secondary"
-                                @click="addSelectedAvailableClicked"
-                                :disabled="selectedAvailable.length === 0">
-                                <i class="fas fa-angle-right"></i>
-                            </button>
-                            <button
-                                id="addAllowedButton"
-                                class="btn btn-block btn-secondary"
-                                @click="addSelectedAllowedClicked"
-                                :disabled="selectedAllowed.length === 0">
-                                <i class="fas fa-angle-left"></i>
-                            </button>
-                            <button
-                                id="allAllowedButton"
-                                class="btn btn-block btn-primary"
-                                @click="allSelectedAllowedClicked"
-                                :disabled="allowed.length === 0">
-                                <i class="fas fa-angle-double-left"></i>
-                            </button>
+                                Available Groups
+                            </label>
+                            <select
+                                id="available-groups"
+                                class="form-control d-flex"
+                                multiple
+                                @change="availableSelectionChanged"
+                                @blur="blurAvailableGroups"
+                            >
+                                <option
+                                    v-for="(item, index) in sortedAvailable"
+                                    :value="item"
+                                >
+                                    {{ item }}
+                                </option>
+                            </select>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-5 h-100 p-0 ">
-                    <div class="form-group h-100 mb-0 d-flex flex-column">
-                        <label
-                            for="allowed-groups"
-                            class="d-flex mb-2 justify-content-end">
-                            Allowed Groups
-                        </label>
-                        <select
-                            id="allowed-groups"
-                            class="form-control d-flex"
-                            multiple
-                            @change="allowedSelectionChanged"
-                            @blur="blurAllowedGroups"
-                        >
-                            <option
-                                v-for="(item, index) in sortedAllowed"
-                                :value="item"
-                            >
-                                {{ item }}
-                            </option>
-                        </select>
+                    <div class="col-2 d-flex flex-column">
+                        <div class="d-flex">
+                            <label
+                                class="sr-only">
+                                Controls
+                            </label>
+                            <label
+                                class="d-flex mb-2 justify-content-center">
+                                &nbsp;
+                            </label>
+                        </div>
+                        <div class="d-flex flex-grow-1 align-items-center">
+                            <div id="control-buttons" class="d-flex flex-column w-100">
+                                <button
+                                    id="allAvailableButton"
+                                    class="btn btn-block btn-primary"
+                                    @click="allSelectedAvailableClicked"
+                                    :disabled="available.length === 0">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </button>
+                                <button
+                                    id="addAvailableButton"
+                                    class="btn btn-block btn-secondary"
+                                    @click="addSelectedAvailableClicked"
+                                    :disabled="selectedAvailable.length === 0">
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                                <button
+                                    id="addAllowedButton"
+                                    class="btn btn-block btn-secondary"
+                                    @click="addSelectedAllowedClicked"
+                                    :disabled="selectedAllowed.length === 0">
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+                                <button
+                                    id="allAllowedButton"
+                                    class="btn btn-block btn-primary"
+                                    @click="allSelectedAllowedClicked"
+                                    :disabled="allowed.length === 0">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="col-5 h-100 p-0 ">
+                        <div class="form-group h-100 mb-0 d-flex flex-column">
+                            <label
+                                for="allowed-groups"
+                                class="d-flex mb-2 justify-content-end">
+                                Allowed Groups
+                            </label>
+                            <select
+                                id="allowed-groups"
+                                class="form-control d-flex"
+                                multiple
+                                @change="allowedSelectionChanged"
+                                @blur="blurAllowedGroups"
+                            >
+                                <option
+                                    v-for="(item, index) in sortedAllowed"
+                                    :value="item"
+                                >
+                                    {{ item }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="card-footer">
 
             </div>
-        </div>
-
-        <!--
-        <div class="card-footer">
 
         </div>
-        -->
 
     </div>
 </template>
@@ -136,7 +145,12 @@
             items: {
                 type: Array,
                 default: function() { return [ { value: 1, label: "Admin Group" } ]; },
-            }
+            },
+
+            startExpanded: {
+                type: Boolean,
+                default: true,
+            },
 
 
         },
@@ -151,6 +165,8 @@
 
             items: function(current, previous)
             {
+                this.available = current;
+
                 // Wait until the actual SELECT children are updated and then adjust the control's height.
                 this.$nextTick(this.autoSelectHeight);
                 this.$emit("update:items", current);
@@ -374,6 +390,18 @@
             //#endregion
 
 
+            collapseClicked: function()
+            {
+                let $button = $(this.$refs.collapseButton);
+                let $icon = $(this.$refs.collapseIcon);
+
+                if($button.hasClass("collapsed"))
+                    $icon.css("transform", this.startExpanded ? "rotate(0deg)" : "rotate(-180deg)");
+                else
+                    $icon.css("transform", this.startExpanded ? "rotate(180deg)" :  "rotate(0deg)");
+            },
+
+
             autoSelectHeight: function()
             {
                 let $available = $("#available-groups");
@@ -399,7 +427,7 @@
                 });
 
                 if(height < $controls.height())
-                    height = $control.height();
+                    height = $controls.height();
 
                 $available.css("height", height + "px");
                 $allowed.css("height", height + "px");
@@ -415,11 +443,10 @@
             this.available = this.items;
             this.allowed = this.value;
 
-
+            let self = this;
 
             $(function()
             {
-
 
 
             });
@@ -430,7 +457,36 @@
 
 
 
-            this.$nextTick(this.autoSelectHeight);
+            this.$nextTick(
+                $.proxy(
+                    function()
+                    {
+                        this.autoSelectHeight();
+
+                        let $button = $(this.$refs.collapseButton);
+                        let $icon = $(this.$refs.collapseIcon);
+                        let $collapse = $(this.$refs.collapse);
+
+                        if(!this.startExpanded)
+                        {
+                            $button
+                                .attr("aria-expanded", false)
+                                .addClass("collapsed");
+
+                            $collapse.removeClass("show");
+                        }
+
+
+
+
+                    },
+                    this
+                )
+            );
+
+
+
+
 
 
         },
@@ -438,6 +494,12 @@
     }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+
+.collapse-button
+    box-shadow none
+    i.collapse-icon
+        transition transform 0.3s ease-in-out
+
 
 </style>

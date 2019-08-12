@@ -8,9 +8,13 @@
         <TagsInput v-model="selected" :tags="tags" ></TagsInput>
         -->
 
-        <PermissionGroups v-model="allowed" :items="items"></PermissionGroups>
+        <PermissionGroups
+            v-model="allowed"
+            :items="items"
+            :start-expanded="true"
+        ></PermissionGroups>
 
-        <button class="btn btn-primary" @click="allowed = [ { value: 1, label: 'Admin Group' } ]">Default</button>
+        <button class="btn btn-primary" @click="items = items2">Change</button>
 
     </div>
 </template>
@@ -19,7 +23,7 @@
 
     import axios from "axios";
 
-    import PermissionGroups from "../components/Permissions/PermissionGroups";
+    import PermissionGroups from "../components/PermissionBuilder/PermissionGroups";
 
     export default {
 
@@ -56,6 +60,13 @@
                     "Interns",
                 ],
 
+                items2: [
+                    "Admin Group",
+                    "Managers",
+                    "Technicians",
+                    "Enterprise Clients",
+                    "Interns",
+                ],
 
             }
         },
@@ -63,16 +74,7 @@
 
         created: function()
         {
-            axios
-                .get("public.php?/api/psql/user-groups")
-                .then(function(response)
-                {
-                    console.log(response.data);
-                })
-                .catch(function(error)
-                {
-                    console.log(error);
-                });
+
 
 
 
