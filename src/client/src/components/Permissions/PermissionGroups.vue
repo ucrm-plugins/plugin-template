@@ -24,7 +24,7 @@
                             class="form-control d-flex"
                             multiple
                             @change="availableSelectionChanged"
-                            @blur="$event.target.value = []"
+                            @blur="blurAvailableGroups"
                         >
                             <option
                                 v-for="(item, index) in available"
@@ -79,7 +79,7 @@
                             class="form-control d-flex"
                             multiple
                             @change="allowedSelectionChanged"
-                            @blur="$event.target.value = []"
+                            @blur="blurAllowedGroups"
                         >
                             <option
                                 v-for="(item, index) in allowed"
@@ -216,13 +216,17 @@
             {
                 let available = [];
                 let allowed = [];
+                let selected = [];
 
                 this.available.forEach(
                     $.proxy(
                         function(item, index, items)
                         {
                             if (this.selectedAvailable.includes(item))
+                            {
+                                selected.push(item);
                                 allowed.push(item);
+                            }
                             else
                                 available.push(item);
                         },
@@ -232,19 +236,28 @@
 
                 this.available = available;
                 this.allowed = this.allowed.concat(allowed);
+
+                this.selectedAvailable = [];
+                this.selectedAllowed = selected;
+
+                $("#allowed-groups").focus();
             },
 
             removeSelectedAllowedClicked: function()
             {
                 let available = [];
                 let allowed = [];
+                let selected = [];
 
                 this.allowed.forEach(
                     $.proxy(
                         function(item, index, items)
                         {
                             if (this.selectedAllowed.includes(item))
+                            {
+                                selected.push(item);
                                 available.push(item);
+                            }
                             else
                                 allowed.push(item);
                         },
@@ -254,17 +267,27 @@
 
                 this.available = this.available.concat(available);
                 this.allowed = allowed;
+
+                this.selectedAvailable = selected;
+                this.selectedAllowed = [];
+
+                $("#available-groups").focus();
             },
 
 
             blurAvailableGroups: function(event)
             {
-                $(event.target).val([]);
+                //$(event.target).val([]);
+
+                //this.selectedAvailable = [];
+
             },
 
             blurAllowedGroups: function(event)
             {
-                $(event.target).val([]);
+                //$(event.target).val([]);
+
+                //this.selectedAllowed = [];
             },
 
 
@@ -301,6 +324,8 @@
 
                 $available.css("height", height + "px");
                 $allowed.css("height", height + "px");
+
+                console.log("sized");
             },
 
         },
@@ -321,8 +346,13 @@
             });
 
 
+            //let self = this;
 
-            this.autoSelectHeight();
+
+
+
+            this.$nextTick(this.autoSelectHeight);
+
 
         },
 
