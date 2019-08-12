@@ -27,7 +27,7 @@
                             @blur="blurAvailableGroups"
                         >
                             <option
-                                v-for="(item, index) in available"
+                                v-for="(item, index) in sortedAvailable"
                                 :value="item"
                             >
                                 {{ item }}
@@ -49,20 +49,34 @@
                     </div>
                     <div class="d-flex flex-grow-1 align-items-center">
                         <div id="control-buttons" class="d-flex flex-column w-100">
-                            <button class="btn btn-block btn-primary"><i class="fas fa-angle-double-right"></i></button>
                             <button
+                                id="allAvailableButton"
+                                class="btn btn-block btn-primary"
+                                @click="allSelectedAvailableClicked"
+                                :disabled="available.length === 0">
+                                <i class="fas fa-angle-double-right"></i>
+                            </button>
+                            <button
+                                id="addAvailableButton"
                                 class="btn btn-block btn-secondary"
                                 @click="addSelectedAvailableClicked"
                                 :disabled="selectedAvailable.length === 0">
                                 <i class="fas fa-angle-right"></i>
                             </button>
                             <button
+                                id="addAllowedButton"
                                 class="btn btn-block btn-secondary"
-                                @click="removeSelectedAllowedClicked"
+                                @click="addSelectedAllowedClicked"
                                 :disabled="selectedAllowed.length === 0">
                                 <i class="fas fa-angle-left"></i>
                             </button>
-                            <button class="btn btn-block btn-primary"><i class="fas fa-angle-double-left"></i></button>
+                            <button
+                                id="allAllowedButton"
+                                class="btn btn-block btn-primary"
+                                @click="allSelectedAllowedClicked"
+                                :disabled="allowed.length === 0">
+                                <i class="fas fa-angle-double-left"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +96,7 @@
                             @blur="blurAllowedGroups"
                         >
                             <option
-                                v-for="(item, index) in allowed"
+                                v-for="(item, index) in sortedAllowed"
                                 :value="item"
                             >
                                 {{ item }}
@@ -143,6 +157,13 @@
             },
 
 
+            available: function(current, previous)
+            {
+            },
+
+            allowed: function(current, previous)
+            {
+            },
 
 
 
@@ -164,13 +185,49 @@
 
 
 
+
+
+
         },
 
         computed: {
 
+            sortedAvailable: function()
+            {
+                let sorted = [];
 
+                this.items.forEach(
+                    $.proxy(
+                        function(item, index, items)
+                        {
+                            if(this.available.includes(item))
+                                sorted.push(item);
+                        },
+                        this
+                    )
+                );
 
+                return sorted;
 
+            },
+
+            sortedAllowed: function()
+            {
+                let sorted = [];
+
+                this.items.forEach(
+                    $.proxy(
+                        function(item, index, items)
+                        {
+                            if(this.allowed.includes(item))
+                                sorted.push(item);
+                        },
+                        this
+                    )
+                );
+
+                return sorted;
+            },
 
 
         },
@@ -199,17 +256,24 @@
             availableSelectionChanged: function()
             {
                 let $available = $("#available-groups");
-                let $selected = $available.children("option:selected");
                 this.selectedAvailable = $available.val();
             },
 
             allowedSelectionChanged: function()
             {
                 let $allowed = $("#allowed-groups");
-                let $selected = $allowed.children("option:selected");
                 this.selectedAllowed = $allowed.val();
             },
 
+
+            allSelectedAvailableClicked: function()
+            {
+                this.selectedAvailable = this.available;
+                this.$nextTick(function()
+                {
+                    $("#addAvailableButton").click();
+                });
+            },
 
 
             addSelectedAvailableClicked: function()
@@ -222,6 +286,8 @@
                     $.proxy(
                         function(item, index, items)
                         {
+
+
                             if (this.selectedAvailable.includes(item))
                             {
                                 selected.push(item);
@@ -240,10 +306,22 @@
                 this.selectedAvailable = [];
                 this.selectedAllowed = selected;
 
+                //console.log(selected);
+
                 $("#allowed-groups").focus();
             },
 
-            removeSelectedAllowedClicked: function()
+            allSelectedAllowedClicked: function()
+            {
+                this.selectedAllowed = this.allowed;
+                this.$nextTick(function()
+                {
+                    $("#addAllowedButton").click();
+                });
+
+            },
+
+            addSelectedAllowedClicked: function()
             {
                 let available = [];
                 let allowed = [];
@@ -255,6 +333,7 @@
                         {
                             if (this.selectedAllowed.includes(item))
                             {
+
                                 selected.push(item);
                                 available.push(item);
                             }
@@ -325,7 +404,7 @@
                 $available.css("height", height + "px");
                 $allowed.css("height", height + "px");
 
-                console.log("sized");
+                //console.log("sized");
             },
 
         },
