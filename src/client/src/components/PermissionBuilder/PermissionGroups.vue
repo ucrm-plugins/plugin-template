@@ -2,20 +2,29 @@
     <div class="card mb-3">
 
         <div class="card-header d-flex justify-content-between align-items-center">
+
             <h5 class="mb-0">Group Permissions</h5>
+
             <button
                 ref="collapseButton"
                 class="collapse-button btn p-0"
                 data-toggle="collapse"
                 :data-target="'#collapse-' + _uid"
                 aria-expanded="true"
-                @click="collapseClicked"
-            >
-                <i ref="collapseIcon" class="collapse-icon fas" :class="[ 'fa-chevron-' + (startExpanded ? 'down' : 'up') ]"  ></i>
+                @click="collapseClicked">
+                <i
+                    ref="collapseIcon"
+                    class="collapse-icon fas"
+                    :class="[ 'fa-chevron-' + (startExpanded ? 'down' : 'up') ]">
+                </i>
             </button>
+
         </div>
 
-        <div ref="collapse" :id="'collapse-' + _uid" class="collapse in show" >
+        <div
+            ref="collapse"
+            :id="'collapse-' + _uid"
+            class="collapse in show">
 
             <div class="card-body">
                 <div class="d-flex">
@@ -28,20 +37,30 @@
                             >
                                 Available Groups
                             </label>
-                            <select
-                                id="available-groups"
-                                class="form-control d-flex"
-                                multiple
-                                @change="availableSelectionChanged"
-                                @blur="blurAvailableGroups"
-                            >
-                                <option
-                                    v-for="(item, index) in sortedAvailable"
-                                    :value="item"
+
+                            <div>
+                                <div
+                                    v-if="availableLoading"
+                                    id="available-groups-loading"
+                                    class="d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                </div>
+
+                                <select
+                                    id="available-groups"
+                                    class="form-control d-flex"
+                                    multiple
+                                    @change="availableSelectionChanged"
+                                    @blur="blurAvailableGroups"
                                 >
-                                    {{ item }}
-                                </option>
-                            </select>
+                                    <option
+                                        v-for="(item, index) in sortedAvailable"
+                                        :value="item"
+                                    >
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -97,20 +116,30 @@
                                 class="d-flex mb-2 justify-content-end">
                                 Allowed Groups
                             </label>
-                            <select
-                                id="allowed-groups"
-                                class="form-control d-flex"
-                                multiple
-                                @change="allowedSelectionChanged"
-                                @blur="blurAllowedGroups"
-                            >
-                                <option
-                                    v-for="(item, index) in sortedAllowed"
-                                    :value="item"
+
+                            <div>
+                                <div
+                                    v-if="allowedLoading"
+                                    id="allowed-groups-loading"
+                                    class="d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                </div>
+
+                                <select
+                                    id="allowed-groups"
+                                    class="form-control d-flex"
+                                    multiple
+                                    @change="allowedSelectionChanged"
+                                    @blur="blurAllowedGroups"
                                 >
-                                    {{ item }}
-                                </option>
-                            </select>
+                                    <option
+                                        v-for="(item, index) in sortedAllowed"
+                                        :value="item"
+                                    >
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -118,7 +147,19 @@
                 </div>
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer d-flex justify-content-between">
+
+                <button
+                    ref="defaultButton"
+                    class="btn btn-secondary">
+                    Default
+                </button>
+
+                <button
+                    ref="updateButton"
+                    class="btn btn-primary">
+                    Update
+                </button>
 
             </div>
 
@@ -128,6 +169,8 @@
 </template>
 
 <script>
+
+    import axios from "axios";
 
 
 
@@ -142,10 +185,12 @@
                 default: function() { return [ { value: 1, label: "Admin Group" } ]; },
             },
 
+            /*
             items: {
                 type: Array,
                 default: function() { return [ { value: 1, label: "Admin Group" } ]; },
             },
+            */
 
             startExpanded: {
                 type: Boolean,
@@ -163,6 +208,7 @@
                 this.$emit("input", current);
             },
 
+
             items: function(current, previous)
             {
                 this.available = current;
@@ -171,6 +217,7 @@
                 this.$nextTick(this.autoSelectHeight);
                 this.$emit("update:items", current);
             },
+
 
 
             available: function(current, previous)
@@ -259,7 +306,10 @@
                 selectedAvailable: [],
                 selectedAllowed: [],
 
+                items: [],
 
+                availableLoading: false,
+                allowedLoading: false,
 
             }
         },
@@ -408,11 +458,16 @@
                 let $allowed = $("#allowed-groups");
                 let $controls = $("#control-buttons");
 
+                let $availableLoading = $("#available-groups-loading");
+                let $allowedLoading = $("#allowed-groups-loading");
+
                 if($available.children().length === 0)
                 {
                     // Default input/control height!
                     $available.css("height", $controls.height() + "px");
                     $allowed.css("height", $controls.height() + "px");
+                    $availableLoading.css("height", $controls.height() + "px");
+                    $allowedLoading.css("height", $controls.height() + "px");
                     return;
                 }
 
@@ -431,16 +486,46 @@
 
                 $available.css("height", height + "px");
                 $allowed.css("height", height + "px");
-
+                $availableLoading.css("height", height + "px");
+                $allowedLoading.css("height", height + "px");
                 //console.log("sized");
             },
 
         },
 
+        created: function()
+        {
+            let self = this;
+
+            this.availableLoading = true;
+
+            axios
+                .get("public.php?/api/psql/user-groups")
+                .then(function(response)
+                {
+                    let names = [];
+
+                    response.data.forEach(function(group)
+                    {
+                        names.push(group.name);
+                    });
+
+                    self.items = names;
+                    self.availableLoading = false;
+                })
+                .catch(function(error)
+                {
+                    console.log(error);
+                });
+
+
+
+        },
 
         mounted: function()
         {
-            this.available = this.items;
+            //this.available = this.items;
+
             this.allowed = this.value;
 
             let self = this;
@@ -500,6 +585,11 @@
     box-shadow none
     i.collapse-icon
         transition transform 0.3s ease-in-out
+
+
+#available-groups-loading
+    position absolute
+    width 100%
 
 
 </style>

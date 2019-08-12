@@ -10,7 +10,6 @@
 
         <PermissionGroups
             v-model="allowed"
-            :items="items"
             :start-expanded="true"
         ></PermissionGroups>
 
