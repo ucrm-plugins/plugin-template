@@ -135,6 +135,7 @@
                                     <option
                                         v-for="(item, index) in sortedAllowed"
                                         :value="item"
+                                        :disabled="item === 'Admin Group'"
                                     >
                                         {{ item }}
                                     </option>
@@ -317,25 +318,41 @@
 
         methods: {
 
-            moveToAllowed: function(groups)
+            moveToAllowed: function(groups, selected = false)
             {
                 this.selectedAvailable = groups;
 
-                this.$nextTick(function()
-                {
-                    $("#addAvailableButton").click();
-                });
+                this.$nextTick(
+                    $.proxy(
+                        function()
+                        {
+                            $("#addAvailableButton").click();
+
+                            if(!selected)
+                                this.selectedAllowed = [];
+                        },
+                        this
+                    )
+                );
 
             },
 
-            moveToAvailable: function(groups)
+            moveToAvailable: function(groups, selected = false)
             {
                 this.selectedAllowed = groups;
 
-                this.$nextTick(function()
-                {
-                    $("#addAllowedButton").click();
-                });
+                this.$nextTick(
+                    $.proxy(
+                        function()
+                        {
+                            $("#addAllowedButton").click();
+
+                            if(!selected)
+                                this.selectedAvailable = [];
+                        },
+                        this
+                    )
+                );
 
             },
 
@@ -400,14 +417,35 @@
                 $("#allowed-groups").focus();
             },
 
-            allSelectedAllowedClicked: function()
+            getAllAllowed: function(disabled = false)
             {
-                this.selectedAllowed = this.allowed;
-                this.$nextTick(function()
+                let allAllowed = [];
+
+                this.allowed.forEach(function(group)
                 {
-                    $("#addAllowedButton").click();
+                    if(group !== "Admin Group" || disabled)
+                        allAllowed.push(group);
                 });
 
+                return allAllowed;
+            },
+
+            getAllAvailable: function(disabled = false)
+            {
+                let allAvailable = [];
+
+                this.available.forEach(function(group)
+                {
+                    if(group !== "Admin Group" || disabled)
+                        allAvailable.push(group);
+                });
+
+                return allAvailable;
+            },
+
+            allSelectedAllowedClicked: function()
+            {
+                this.moveToAvailable(this.getAllAllowed());
             },
 
             addSelectedAllowedClicked: function()
@@ -549,22 +587,14 @@
                 .then(function(response)
                 {
                     let names = [];
-                    let allowed = [];
 
                     response.data.forEach(function(group)
                     {
-                        if(group.allowed === "1")
-                        {
-                            names.push(group.group);
-
-                            if(self.available.includes(group.group))
-                                allowed.push(group.group);
-                        }
+                        if(self.available.includes(group))
+                            names.push(group);
                     });
 
-                    //self.allowed = names;
-
-                    self.moveToAllowed(allowed);
+                    self.moveToAllowed(names);
 
                     self.allowedLoading = false;
                 })

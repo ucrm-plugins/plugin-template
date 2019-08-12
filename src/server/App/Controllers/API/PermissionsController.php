@@ -23,6 +23,9 @@ use UCRM\Common\Plugin;
  */
 final class PermissionsController
 {
+    public const FILE_PATH = __DIR__ . "/../../../../data/permissions.json";
+
+    public const JSON_OPTS = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
     /**
      * PsqlController constructor.
@@ -34,11 +37,27 @@ final class PermissionsController
         // Get a local reference to the Slim Application's DI Container.
         $container = $app->getContainer();
 
+        $dir = realpath(dirname(self::FILE_PATH));
 
-        // Handle GET queries to the file logs...
-        $app->get(
-            "/permissions/groups[/]",
+        if($dir && !file_exists($dir . "/permissions.json"))
+        {
+            $data = [
+                "groups" => [
+                    "Admin Group"
+                ],
+                "users" => [],
+            ];
 
+            file_put_contents($dir."/permissions.json", json_encode($data, self::JSON_OPTS), LOCK_EX);
+        }
+
+        $path = realpath($dir . "/permissions.json");
+
+        $data = json_decode(file_get_contents($path), true);
+
+
+
+        $app->get("/permissions/groups[/]",
             function (Request $request, Response $response, array $args) use ($container)
             {
                 /** @noinspection PhpUndefinedClassConstantInspection */
@@ -60,71 +79,26 @@ final class PermissionsController
             }
         );
 
-        $app->get(
-            "/permissions/groups/allowed",
-
-            function (Request $request, Response $response, array $args) use ($container)
+        $app->get("/permissions/groups/allowed",
+            function (Request $request, Response $response, array $args) use ($container, $path, $data)
             {
-                Plugin::dbQuery(
-                    "
-                    CREATE TABLE IF NOT EXISTS permissions (
-                        id INTEGER PRIMARY KEY,
-                        \"group\" TEXT NOT NULL,
-                        allowed INTEGER NOT NULL DEFAULT 0
-                    );
-                    "
-                );
-
-                $results = Plugin::dbQuery(
-                    "
-                    SELECT * FROM permissions;
-                    "
-                );
-
-                if(count($results) === 0)
-                {
-                    $results = Plugin::dbQuery(
-                        "
-                        INSERT INTO permissions
-                            ( \"group\", allowed )
-                        VALUES
-                            ( \"Admin Group\", 1 )
-                        ;
-                        "
-                    );
-                }
-
-                $results = Plugin::dbQuery(
-                    "
-                    SELECT * FROM permissions;
-                    "
-                );
-
-                return $response->withJson($results);
+                return $response->withJson($data["groups"]);
             }
         );
 
-        // Handle GET queries to the file logs...
-        $app->post(
-            "/permissions/groups/allowed",
-
-            function (Request $request, Response $response, array $args) use ($container)
+        $app->post("/permissions/groups/allowed",
+            function (Request $request, Response $response, array $args) use ($container, $path, $data)
             {
                 $body = $request->getBody()->getContents();
 
-                $data = json_decode($body, true);
+                $newData = json_decode($body, true);
 
-                $group = $data["group"];
-                $allowed = $data["allowed"];
+                if(array_key_exists("groups", $newData))
+                    $data["groups"] = array_merge($data["groups"], $newData["groups"]);
 
-                $results = Plugin::dbQuery(
-                    "
-                    SELECT * FROM permissions
-                    WHERE \"group\" = \"$group\";
-                    "
-                );
+                file_put_contents($path, json_encode($data, self::JSON_OPTS), LOCK_EX);
 
-                return $response->withJson($results);
+                return $response->withJson($data);
             }
         );
 
