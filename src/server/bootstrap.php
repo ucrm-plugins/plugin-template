@@ -249,6 +249,7 @@ $container['notFoundHandler'] = function (Container $container)
 
 // NOTE: Middleware is handled in ascending order, starting with the last middleware added!
 
+// Add context information here for use by the Logging system for ALL requests...
 $app->add(function (Request $request, Response $response, $next) use ($app) {
     Log::debug(
         $request->getAttribute("vRoute"), Log::HTTP, [
@@ -259,7 +260,7 @@ $app->add(function (Request $request, Response $response, $next) use ($app) {
     return $next($request, $response);
 });
 
-// Handle Plugin-wide Authentication suing our custom PluginAuthentication middleware...
+// Handle Plugin-wide Authentication using our custom PluginAuthentication middleware...
 $app->add(new PluginAuthentication($container,
     function(SessionUser $user)
     {

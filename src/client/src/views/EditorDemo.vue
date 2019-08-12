@@ -33,7 +33,7 @@
 
 <script>
 
-    import Editor from "../AceEditor/Editor";
+    import Editor from "../components/AceEditor/Editor";
 
     export default {
 
@@ -64,7 +64,7 @@
             refresh: function(mode)
             {
                 this.mode = mode;
-                console.log(mode);
+                //console.log(mode);
 
             },
 

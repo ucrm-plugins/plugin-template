@@ -467,7 +467,7 @@
                 url += "&delete=yes";
 
                 // Log the URL to the browser console.
-                console.log(url);
+                //console.log(url);
 
                 // Hide the Tools collapse (mobile view only).
                 $("#logsTools").collapse("hide");
@@ -631,7 +631,7 @@
                     method: "GET",
                     success(logs) {
 
-                        console.log("getLogs()", url, logs);
+                        //console.log("getLogs()", url, logs);
 
                         // Update the metadata for all logs.
                         self.meta = logs;
@@ -681,7 +681,7 @@
                     method: "GET",
                     success(data) {
 
-                        console.log("getLog(" + link + ")", url, data);
+                        //console.log("getLog(" + link + ")", url, data);
 
                         // IF the resulting dataset contains information for the currently requested log...
                         if(data.hasOwnProperty(self.name)) {

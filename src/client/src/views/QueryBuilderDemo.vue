@@ -92,7 +92,7 @@
 
 <script>
 
-    import QueryBuilder from "../QueryBuilder/QueryBuilder";
+    import QueryBuilder from "../components/QueryBuilder/QueryBuilder";
     import VueJsonPretty from "vue-json-pretty";
 
     export default {
@@ -408,7 +408,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
-@import "../../assets/css/query-builder.css";
+@import "../assets/css/query-builder.css";
 
 
 </style>

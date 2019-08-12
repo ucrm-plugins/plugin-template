@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Router from "vue-router";
-import PageNotFound from "../components/views/404";
+import PageNotFound from "../views/404";
 
-import EditorDemo from "../components/views/EditorDemo";
-import QueryBuilderDemo from "../components/views/QueryBuilderDemo";
-import HtmlDesignerDemo from "../components/views/HtmlDesignerDemo";
-import History from "../components/views/History";
-import Logs from "../components/views/Logs";
-import Settings from "../components/views/Settings";
+import EditorDemo from "../views/EditorDemo";
+import QueryBuilderDemo from "../views/QueryBuilderDemo";
+import HtmlDesignerDemo from "../views/HtmlDesignerDemo";
+import History from "../views/History";
+import Logs from "../views/Logs";
+import Settings from "../views/Settings";
 
 
 Vue.use(Router);

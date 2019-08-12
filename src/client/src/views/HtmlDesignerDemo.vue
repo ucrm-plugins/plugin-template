@@ -10,7 +10,7 @@
 
 <script>
 
-    import HtmlDesigner from "../HtmlDesigner/HtmlDesigner";
+    import HtmlDesigner from "../components/HtmlDesigner/HtmlDesigner";
 
     export default {
 

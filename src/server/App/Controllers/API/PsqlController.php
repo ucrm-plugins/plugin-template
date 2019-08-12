@@ -245,6 +245,35 @@ final class PsqlController
             }
         );
 
+
+
+
+        $app->get(
+            "/psql/user-groups",
+
+            function (Request $request, Response $response, array $args) use ($container)
+            {
+                /** @noinspection PhpUndefinedClassConstantInspection */
+                Database::connect(
+                    getenv("POSTGRES_HOST") ?: Settings::UCRM_DB_HOST,
+                    (int)getenv("POSTGRES_PORT") ?: Settings::UCRM_DB_PORT,
+                    getenv("POSTGRES_DB") ?: Settings::UCRM_DB_NAME,
+                    getenv("POSTGRES_USER") ?: Settings::UCRM_DB_USER,
+                    getenv("POSTGRES_PASSWORD") ?: Settings::UCRM_DB_PASSWORD
+                );
+
+                $results = Database::query(
+                    "
+                    SELECT * FROM user_group;                
+                    "
+                );
+
+                return $response->withJson($results);
+            }
+        );
+
+
+
     }
 
 }

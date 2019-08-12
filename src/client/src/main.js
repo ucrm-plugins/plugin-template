@@ -7,6 +7,7 @@ import path from "path";
 
 Vue.config.productionTip = false;
 
+/*
 Vue.prototype.$url = {
 
     href: window.location.href,
@@ -16,6 +17,22 @@ Vue.prototype.$url = {
 
 
 };
+*/
+
+Object.defineProperty(
+    Array.prototype,
+    "search",
+    {
+        value: function(prop, value)
+        {
+            for (let i=0; i < this.length; i++)
+            {
+                if (this[i].hasOwnProperty(prop) && this[i][prop] === value)
+                    return this[i];
+            }
+        }
+    }
+);
 
 
 
