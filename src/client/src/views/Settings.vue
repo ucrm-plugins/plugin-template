@@ -2,19 +2,13 @@
     <div class="hello">
         <h3>Settings</h3>
 
-        <!--
-        <input type="text" class="form-control" value="Test" />
-
-        <TagsInput v-model="selected" :tags="tags" ></TagsInput>
-        -->
-
         <PermissionGroups
-            v-model="allowed"
             :start-expanded="true"
         ></PermissionGroups>
 
+        <!--
         <button class="btn btn-primary" @click="items = items2">Change</button>
-
+        -->
 
 
     </div>

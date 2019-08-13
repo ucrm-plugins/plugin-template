@@ -27,13 +27,13 @@
             class="collapse in show">
 
             <div class="card-body">
-                <div class="d-flex">
+                <div class="d-flex flex-column flex-sm-row">
 
-                    <div class="col-5 h-100 p-0 ">
+                    <div class="col-12 col-sm-5 h-100 p-0 ">
                         <div class="form-group h-100 mb-0 d-flex flex-column">
                             <label
                                 for="available-groups"
-                                class="d-flex mb-2"
+                                class="d-flex mb-2 justify-content-center justify-content-sm-start"
                             >
                                 Available Groups
                             </label>
@@ -52,7 +52,7 @@
                                     multiple
                                     @change="availableSelectionChanged"
                                     @blur="blurAvailableGroups"
-                                >
+                                    :disabled="updating">
                                     <option
                                         v-for="(item, index) in sortedAvailable"
                                         :value="item"
@@ -64,8 +64,8 @@
                         </div>
                     </div>
 
-                    <div class="col-2 d-flex flex-column">
-                        <div class="d-flex">
+                    <div class="col-12 col-sm-2 px-0 px-sm-3 my-3 my-sm-0 d-flex flex-column">
+                        <div class="d-none d-sm-flex">
                             <label
                                 class="sr-only">
                                 Controls
@@ -76,44 +76,44 @@
                             </label>
                         </div>
                         <div class="d-flex flex-grow-1 align-items-center">
-                            <div id="control-buttons" class="d-flex flex-column w-100">
+                            <div id="control-buttons" class="d-flex flex-sm-column w-100">
                                 <button
                                     id="allAvailableButton"
                                     class="btn btn-block btn-primary"
                                     @click="allSelectedAvailableClicked"
-                                    :disabled="available.length === 0">
+                                    :disabled="available.length === 0 || updating">
                                     <i class="fas fa-angle-double-right"></i>
                                 </button>
                                 <button
                                     id="addAvailableButton"
-                                    class="btn btn-block btn-secondary"
+                                    class="btn btn-block btn-secondary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="addSelectedAvailableClicked"
-                                    :disabled="selectedAvailable.length === 0">
+                                    :disabled="selectedAvailable.length === 0 || updating">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                                 <button
                                     id="addAllowedButton"
-                                    class="btn btn-block btn-secondary"
+                                    class="btn btn-block btn-secondary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="addSelectedAllowedClicked"
-                                    :disabled="selectedAllowed.length === 0">
+                                    :disabled="selectedAllowed.length === 0 || updating">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                                 <button
                                     id="allAllowedButton"
-                                    class="btn btn-block btn-primary"
+                                    class="btn btn-block btn-primary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="allSelectedAllowedClicked"
-                                    :disabled="allowed.length <= 1">
+                                    :disabled="allowed.length <= 1 || updating">
                                     <i class="fas fa-angle-double-left"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-5 h-100 p-0 ">
+                    <div class="col-12 col-sm-5 h-100 p-0 ">
                         <div class="form-group h-100 mb-0 d-flex flex-column">
                             <label
                                 for="allowed-groups"
-                                class="d-flex mb-2 justify-content-end">
+                                class="d-flex mb-2 justify-content-center justify-content-sm-end">
                                 Allowed Groups
                             </label>
 
@@ -131,7 +131,7 @@
                                     multiple
                                     @change="allowedSelectionChanged"
                                     @blur="blurAllowedGroups"
-                                >
+                                    :disabled="updating">
                                     <option
                                         v-for="(item, index) in sortedAllowed"
                                         :value="item"
@@ -144,18 +144,10 @@
                         </div>
                     </div>
 
-
                 </div>
             </div>
 
-            <div class="card-footer d-flex justify-content-between">
-
-                <button
-                    ref="defaultButton"
-                    class="btn btn-secondary"
-                    @click="defaultClicked">
-                    Default
-                </button>
+            <div class="card-footer d-flex justify-content-end">
 
                 <button
                     ref="updateButton"
@@ -174,20 +166,19 @@
 
 <script>
 
-    import axios from "axios";
     import api from "../../services/api";
 
 
 
-
     export default {
+
         name: "PermissionGroups",
 
         props: {
 
             value: {
                 type: Array,
-                default: function() { return [ { value: 1, label: "Admin Group" } ]; },
+                default: function() { return [ "Admin Group" ]; },
             },
 
             startExpanded: {
@@ -253,6 +244,10 @@
                 let $button = $(this.$refs.updateButton);
                 let $available = $("#available-groups");
                 let $allowed = $("#allowed-groups");
+                let $allAvailableButton = $("#allAvailableButton");
+                let $addAvailableButton = $("#addAvailableButton");
+                let $addAllowedButton = $("#addAllowedButton");
+                let $allAllowedButton = $("#allAllowedButton");
 
                 if(current)
                 {
@@ -261,8 +256,9 @@
                     $button.html("<i class='fas fa-spinner fa-spin'></i>");
                     $button.attr("disabled", true);
 
-                    $available.attr("disabled", true);
-                    $allowed.attr("disabled", true);
+                    //$available.attr("disabled", true);
+                    //$allowed.attr("disabled", true);
+
                 }
                 else
                 {
@@ -270,8 +266,8 @@
                     $button.css("width", "");
                     $button.attr("disabled", false);
 
-                    $available.attr("disabled", false);
-                    $allowed.attr("disabled", false);
+                    //$available.attr("disabled", false);
+                    //$allowed.attr("disabled", false);
                 }
 
 
@@ -570,7 +566,7 @@
             },
 
 
-            autoSelectHeight: function()
+            autoSelectHeight: function(min = 176) // Center button height
             {
                 let $available = $("#available-groups");
                 let $allowed = $("#allowed-groups");
@@ -582,10 +578,14 @@
                 if($available.children().length === 0)
                 {
                     // Default input/control height!
-                    $available.css("height", $controls.height() + "px");
-                    $allowed.css("height", $controls.height() + "px");
-                    $availableLoading.css("height", $controls.height() + "px");
-                    $allowedLoading.css("height", $controls.height() + "px");
+                    //$available.css("height", $controls.height() + "px");
+                    //$allowed.css("height", $controls.height() + "px");
+                    //$availableLoading.css("height", $controls.height() + "px");
+                    //$allowedLoading.css("height", $controls.height() + "px");
+                    $available.css("height", min + "px");
+                    $allowed.css("height", min + "px");
+                    $availableLoading.css("height", min + "px");
+                    $allowedLoading.css("height", min + "px");
                     return;
                 }
 
@@ -599,8 +599,10 @@
                     height += $option.outerHeight(true);
                 });
 
-                if(height < $controls.height())
-                    height = $controls.height();
+                //if(height < $controls.height())
+                //    height = $controls.height();
+                if(height < min)
+                    height = min;
 
                 $available.css("height", height + "px");
                 $allowed.css("height", height + "px");
@@ -647,11 +649,8 @@
 
             let self = this;
 
-            $(function()
-            {
 
 
-            });
 
 
             //let self = this;
@@ -688,7 +687,12 @@
 
 
 
+            $(function()
+            {
 
+
+
+            });
 
 
         },
@@ -707,6 +711,14 @@
 #available-groups-loading, #allowed-groups-loading
     position absolute
     width 100%
+
+
+@media screen and (max-width: 575px)
+    #allAvailableButton, #addAvailableButton, #addAllowedButton, #allAllowedButton
+        & i
+            transform rotate(90deg)
+
+
 
 
 </style>
