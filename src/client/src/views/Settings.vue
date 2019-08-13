@@ -15,6 +15,8 @@
 
         <button class="btn btn-primary" @click="items = items2">Change</button>
 
+
+
     </div>
 </template>
 
@@ -86,7 +88,16 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="stylus" scoped>
+
+    .list-group-item
+        padding 0.5rem
+
+        & i
+            width 24px
+            text-align center
+            margin-right 0.5rem
+
 
 
 

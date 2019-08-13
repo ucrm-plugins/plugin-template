@@ -102,7 +102,7 @@
                                     id="allAllowedButton"
                                     class="btn btn-block btn-primary"
                                     @click="allSelectedAllowedClicked"
-                                    :disabled="allowed.length === 0">
+                                    :disabled="allowed.length <= 1">
                                     <i class="fas fa-angle-double-left"></i>
                                 </button>
                             </div>
@@ -152,13 +152,16 @@
 
                 <button
                     ref="defaultButton"
-                    class="btn btn-secondary">
+                    class="btn btn-secondary"
+                    @click="defaultClicked">
                     Default
                 </button>
 
                 <button
                     ref="updateButton"
-                    class="btn btn-primary">
+                    class="btn btn-primary"
+                    @click="updateClicked"
+                    :disabled="allowed.length < 1">
                     Update
                 </button>
 
@@ -172,6 +175,7 @@
 <script>
 
     import axios from "axios";
+    import api from "../../services/api";
 
 
 
@@ -185,13 +189,6 @@
                 type: Array,
                 default: function() { return [ { value: 1, label: "Admin Group" } ]; },
             },
-
-            /*
-            items: {
-                type: Array,
-                default: function() { return [ { value: 1, label: "Admin Group" } ]; },
-            },
-            */
 
             startExpanded: {
                 type: Boolean,
@@ -249,6 +246,41 @@
 
 
 
+
+            updating: function(current, previous)
+            {
+
+                let $button = $(this.$refs.updateButton);
+                let $available = $("#available-groups");
+                let $allowed = $("#allowed-groups");
+
+                if(current)
+                {
+                    let width = $button.outerWidth();
+                    $button.css("width", width + "px");
+                    $button.html("<i class='fas fa-spinner fa-spin'></i>");
+                    $button.attr("disabled", true);
+
+                    $available.attr("disabled", true);
+                    $allowed.attr("disabled", true);
+                }
+                else
+                {
+                    $button.html("Update");
+                    $button.css("width", "");
+                    $button.attr("disabled", false);
+
+                    $available.attr("disabled", false);
+                    $allowed.attr("disabled", false);
+                }
+
+
+
+
+
+
+
+            },
 
 
 
@@ -312,11 +344,36 @@
                 availableLoading: false,
                 allowedLoading: false,
 
+
+                updating: false,
+
             }
         },
 
 
         methods: {
+
+            defaultClicked: function()
+            {
+                console.log("Default clicked!");
+            },
+
+            updateClicked: function()
+            {
+                this.updating =true;
+                api.setGroupsAllowed(this.allowed)
+                    .then(
+                        $.proxy(
+                            function(names)
+                            {
+                                this.updating = false;
+                            },
+                            this
+                        )
+                    );
+            },
+
+
 
             moveToAllowed: function(groups, selected = false)
             {
@@ -559,49 +616,22 @@
             let self = this;
 
             this.availableLoading = true;
-
-            axios
-                .get("public.php?/api/permissions/groups")
-                .then(function(response)
+            api.getGroupsAvailable()
+                .then(function(names)
                 {
-                    let names = [];
-
-                    response.data.forEach(function(group)
-                    {
-                        names.push(group.name);
-                    });
-
                     self.items = names;
                     self.availableLoading = false;
-                })
-                .catch(function(error)
-                {
-                    console.log(error);
                 });
-
 
             this.allowedLoading = true;
-
-            axios
-                .get("public.php?/api/permissions/groups/allowed")
-                .then(function(response)
+            api.getGroupsAllowed(this.available)
+                .then(function(names)
                 {
-                    let names = [];
-
-                    response.data.forEach(function(group)
-                    {
-                        if(self.available.includes(group))
-                            names.push(group);
-                    });
-
+                    console.log(names);
                     self.moveToAllowed(names);
-
                     self.allowedLoading = false;
-                })
-                .catch(function(error)
-                {
-                    console.log(error);
                 });
+
 
 
 

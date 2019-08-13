@@ -1,40 +1,9 @@
 import Vue from 'vue';
 import App from './App.vue';
 import router from "./router";
-//import Router from "vue-router";
-import path from "path";
 
 
 Vue.config.productionTip = false;
-
-/*
-Vue.prototype.$url = {
-
-    href: window.location.href,
-    hostname: window.location.hostname,
-    pathname: window.location.pathname,
-    protocol: window.location.protocol,
-
-
-};
-*/
-
-Object.defineProperty(
-    Array.prototype,
-    "search",
-    {
-        value: function(prop, value)
-        {
-            for (let i=0; i < this.length; i++)
-            {
-                if (this[i].hasOwnProperty(prop) && this[i][prop] === value)
-                    return this[i];
-            }
-        }
-    }
-);
-
-
 
 
 new Vue({

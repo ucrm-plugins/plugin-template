@@ -89,14 +89,12 @@ final class PermissionsController
         $app->post("/permissions/groups/allowed",
             function (Request $request, Response $response, array $args) use ($container, $path, $data)
             {
-                $body = $request->getBody()->getContents();
+                $body = json_decode($request->getBody()->getContents(), true);
 
-                $newData = json_decode($body, true);
+                if(array_key_exists("groups", $body) && count($body["groups"]) > 0)
+                    $data["groups"] = $body["groups"];
 
-                if(array_key_exists("groups", $newData))
-                    $data["groups"] = array_merge($data["groups"], $newData["groups"]);
-
-                file_put_contents($path, json_encode($data, self::JSON_OPTS), LOCK_EX);
+                file_put_contents($path, json_encode($data, self::JSON_OPTS) . "\n", LOCK_EX);
 
                 return $response->withJson($data);
             }
