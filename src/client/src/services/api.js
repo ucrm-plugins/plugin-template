@@ -98,8 +98,6 @@ export default class API
 
     static setGroupsAllowed(names)
     {
-        console.log("started");
-
         return API.axios()
             .post("public.php?/api/permissions/groups/allowed", { groups: names })
             .then(

@@ -3,7 +3,9 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
 
-            <h5 class="mb-0">Group Permissions</h5>
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">Group Permissions</h5>
+            </div>
 
             <button
                 ref="collapseButton"
@@ -31,12 +33,20 @@
 
                     <div class="col-12 col-sm-5 h-100 p-0 ">
                         <div class="form-group h-100 mb-0 d-flex flex-column">
-                            <label
-                                for="available-groups"
-                                class="d-flex mb-2 justify-content-center justify-content-sm-start"
-                            >
-                                Available Groups
-                            </label>
+                            <div class="d-flex align-items-center">
+                                <label
+                                    for="available-groups"
+                                    class="d-flex mb-2 justify-content-center justify-content-sm-start">
+                                    Available Groups
+                                </label>
+                                <i
+                                    class="fas fa-info-circle ml-2 mb-2"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="The User Groups configured in the UCRM or UNMS system.">
+                                </i>
+                            </div>
 
                             <div>
                                 <div
@@ -81,28 +91,44 @@
                                     id="allAvailableButton"
                                     class="btn btn-block btn-primary"
                                     @click="allSelectedAvailableClicked"
-                                    :disabled="available.length === 0 || updating">
+                                    :disabled="available.length === 0 || updating"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="Add all groups to the allowed list.">
                                     <i class="fas fa-angle-double-right"></i>
                                 </button>
                                 <button
                                     id="addAvailableButton"
                                     class="btn btn-block btn-secondary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="addSelectedAvailableClicked"
-                                    :disabled="selectedAvailable.length === 0 || updating">
+                                    :disabled="selectedAvailable.length === 0 || updating"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="Add the selected groups to the allowed list.">
                                     <i class="fas fa-angle-right"></i>
                                 </button>
                                 <button
                                     id="addAllowedButton"
                                     class="btn btn-block btn-secondary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="addSelectedAllowedClicked"
-                                    :disabled="selectedAllowed.length === 0 || updating">
+                                    :disabled="selectedAllowed.length === 0 || updating"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="Remove the selected groups from the allowed list.">
                                     <i class="fas fa-angle-left"></i>
                                 </button>
                                 <button
                                     id="allAllowedButton"
                                     class="btn btn-block btn-primary mt-0 mt-sm-2 ml-2 ml-sm-0"
                                     @click="allSelectedAllowedClicked"
-                                    :disabled="allowed.length <= 1 || updating">
+                                    :disabled="allowed.length <= 1 || updating"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="Remove all groups from the allowed list.">
                                     <i class="fas fa-angle-double-left"></i>
                                 </button>
                             </div>
@@ -111,11 +137,20 @@
 
                     <div class="col-12 col-sm-5 h-100 p-0 ">
                         <div class="form-group h-100 mb-0 d-flex flex-column">
-                            <label
-                                for="allowed-groups"
-                                class="d-flex mb-2 justify-content-center justify-content-sm-end">
-                                Allowed Groups
-                            </label>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <i
+                                    class="fas fa-info-circle mr-2 mb-2"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-placement="bottom"
+                                    data-content="The User Groups currently allowed to access this plugin.">
+                                </i>
+                                <label
+                                    for="allowed-groups"
+                                    class="d-flex mb-2 justify-content-center justify-content-sm-end">
+                                    Allowed Groups
+                                </label>
+                            </div>
 
                             <div>
                                 <div
@@ -176,10 +211,12 @@
 
         props: {
 
+            /*
             value: {
                 type: Array,
-                default: function() { return [ "Admin Group" ]; },
+                default: function() { return [ ]; },
             },
+            */
 
             startExpanded: {
                 type: Boolean,
@@ -242,12 +279,16 @@
             {
 
                 let $button = $(this.$refs.updateButton);
+
+                /*
                 let $available = $("#available-groups");
                 let $allowed = $("#allowed-groups");
                 let $allAvailableButton = $("#allAvailableButton");
                 let $addAvailableButton = $("#addAvailableButton");
                 let $addAllowedButton = $("#addAllowedButton");
                 let $allAllowedButton = $("#allAllowedButton");
+
+                 */
 
                 if(current)
                 {
@@ -349,13 +390,10 @@
 
         methods: {
 
-            defaultClicked: function()
-            {
-                console.log("Default clicked!");
-            },
-
             updateClicked: function()
             {
+                console.log(this.allowed);
+
                 this.updating =true;
                 api.setGroupsAllowed(this.allowed)
                     .then(
@@ -427,6 +465,8 @@
 
             allSelectedAvailableClicked: function()
             {
+                $('[data-toggle="popover"]').popover("hide");
+
                 this.selectedAvailable = this.available;
                 this.$nextTick(function()
                 {
@@ -437,6 +477,8 @@
 
             addSelectedAvailableClicked: function()
             {
+                $('[data-toggle="popover"]').popover("hide");
+
                 let available = [];
                 let allowed = [];
                 let selected = [];
@@ -498,11 +540,15 @@
 
             allSelectedAllowedClicked: function()
             {
+                $('[data-toggle="popover"]').popover("hide");
+
                 this.moveToAvailable(this.getAllAllowed());
             },
 
             addSelectedAllowedClicked: function()
             {
+                $('[data-toggle="popover"]').popover("hide");
+
                 let available = [];
                 let allowed = [];
                 let selected = [];
@@ -629,7 +675,7 @@
             api.getGroupsAllowed(this.available)
                 .then(function(names)
                 {
-                    console.log(names);
+                    //console.log(names);
                     self.moveToAllowed(names);
                     self.allowedLoading = false;
                 });
@@ -645,7 +691,7 @@
         {
             //this.available = this.items;
 
-            this.allowed = this.value;
+            //this.allowed = this.value;
 
             let self = this;
 
@@ -689,7 +735,7 @@
 
             $(function()
             {
-
+                $('[data-toggle="popover"]').popover();
 
 
             });
