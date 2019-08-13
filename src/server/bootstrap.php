@@ -260,16 +260,31 @@ $app->add(function (Request $request, Response $response, $next) use ($app) {
     return $next($request, $response);
 });
 
+$allowedGroups = [ "Admin Group" ];
+
+if(file_exists(__DIR__ . "/../data/permissions.json"))
+{
+    $json = json_decode(file_get_contents(__DIR__ . "/../data/permissions.json"), true);
+
+    if(json_last_error() === JSON_ERROR_NONE)
+    {
+        $allowedGroups = $json["groups"];
+    }
+}
+
 // Handle Plugin-wide Authentication using our custom PluginAuthentication middleware...
 $app->add(new PluginAuthentication($container,
-    function(SessionUser $user)
+    function(SessionUser $user) use ($allowedGroups)
     {
         // NOTE: Apply your own logic here and return TRUE/FALSE to authenticate successfully/unsuccessfully!
         return in_array(
             $user->getUserGroup(),
+            $allowedGroups
+            /*
             [
                 "Admin Group",
             ]
+            */
         );
     }
 ));

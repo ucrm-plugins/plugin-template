@@ -669,16 +669,19 @@
                 {
                     self.items = names;
                     self.availableLoading = false;
+
+                    self.allowedLoading = true;
+                    api.getGroupsAllowed(self.available)
+                        .then(function(names)
+                        {
+                            //console.log(names);
+                            self.moveToAllowed(names);
+                            self.allowedLoading = false;
+                        });
+
                 });
 
-            this.allowedLoading = true;
-            api.getGroupsAllowed(this.available)
-                .then(function(names)
-                {
-                    //console.log(names);
-                    self.moveToAllowed(names);
-                    self.allowedLoading = false;
-                });
+
 
 
 
